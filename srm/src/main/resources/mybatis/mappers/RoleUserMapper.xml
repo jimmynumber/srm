@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.RoleUserDao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.RoleUser">
+    <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ROLE_ID, USER_ID, CREATE_USER, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.want.srm.entity.RoleUserKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ROLE_USER
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.want.srm.entity.RoleUserKey">
+    delete from ROLE_USER
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.RoleUser">
+    insert into ROLE_USER (ROLE_ID, USER_ID, CREATE_USER, 
+      CREATE_TIME)
+    values (#{roleId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.RoleUser">
+    insert into ROLE_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.RoleUser">
+    update ROLE_USER
+    <set>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.RoleUser">
+    update ROLE_USER
+    set CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE}
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

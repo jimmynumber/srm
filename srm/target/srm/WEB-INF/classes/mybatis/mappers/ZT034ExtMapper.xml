@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT034Dao">
+  <select id="selectListByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT034
+    where DZBDH = #{statementCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectZT034ListBydzbdh" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT034
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR} order by DZBMQ+0
+  </select>
+  
+  <select id="selectZT003ListBydzbdh" parameterType="java.lang.String" resultType="com.want.srm.vo.ZT003VO">
+  	select ZT009.QMNUM as qmnum,ZT003.BYCD as bycd,
+	a2.ATTRIBUTE_VALUE as gysfkzt,'进料异常' as qmart,
+	ZT003.PCJE as pcje,ZT003.CLFS as clfs,
+	CONCAT(ZT003.CLFS_DES,a1.ATTRIBUTE_VALUE) as clfsDes,ZT003.EBELN as ebeln,
+	ZT003.MATNR as matnr,ZT003.MAKTX as maktx
+	from ZT003
+	inner join ZT009 on ZT009.QMNUM = ZT003.QMNUM 
+	left join ATTRIBUTE_INFO a1 on ZT003.CLFS_DES = a1.ATTRIBUTE_KEY and a1.ATTRIBUTE_ID = 'result_type'
+	left join ATTRIBUTE_INFO a2 on ZT003.GYSFKZT = a2.ATTRIBUTE_KEY and a2.ATTRIBUTE_ID = 'exception_state'
+    where ZT009.DZBDH = #{dzbdh,jdbcType=VARCHAR}
+	union all
+	select ZT034.QMNUM as qmnum,ZT003.BYCD as bycd,
+	a2.ATTRIBUTE_VALUE as gysfkzt,'制程异常' as qmart,
+	ZT003.PCJE as pcje,ZT003.CLFS as clfs,
+	CONCAT(ZT003.CLFS_DES,a1.ATTRIBUTE_VALUE) as clfsDes,ZT003.EBELN as ebeln,
+	ZT003.MATNR as matnr,ZT003.MAKTX as maktx
+	from ZT003
+	inner join ZT034 on ZT034.QMNUM = ZT003.QMNUM 
+	left join ATTRIBUTE_INFO a1 on ZT003.CLFS_DES = a1.ATTRIBUTE_KEY and a1.ATTRIBUTE_ID = 'result_type'
+	left join ATTRIBUTE_INFO a2 on ZT003.GYSFKZT = a2.ATTRIBUTE_KEY and a2.ATTRIBUTE_ID = 'exception_state'
+    where ZT034.DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </select>
+
+	<insert id="insertList">
+    insert into ZT034 (DZBDH, DZBMQ, QMNUM, 
+      ERDAT, BDWCDAT, MGEIG, 
+      PCJE)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.dzbdh,jdbcType=VARCHAR}, #{item.dzbmq,jdbcType=VARCHAR}, #{item.qmnum,jdbcType=VARCHAR}, 
+      #{item.erdat,jdbcType=VARCHAR}, #{item.bdwcdat,jdbcType=VARCHAR}, #{item.mgeig,jdbcType=VARCHAR}, 
+      #{item.pcje,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+  <select id="selectNextId" resultType="java.lang.String">
+  	SELECT CAST(DZBMQ+10 AS CHAR) AS mid from srmdb.ZT034 ORDER BY DZBMQ+0 DESC limit 0,1
+  </select>
+</mapper>

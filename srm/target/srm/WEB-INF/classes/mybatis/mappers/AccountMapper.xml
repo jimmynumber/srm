@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.AccountDao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.Account">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, NAME, STATUS, ACCOUNT, PASSWORD, EMAIL, CREATE_DATE, UPDATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ACCOUNT
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ACCOUNT
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+	  <insert id="insert" parameterType="com.want.srm.entity.Account">
+	    insert into ACCOUNT (ID, NAME,
+	      STATUS, ACCOUNT, 
+	      PASSWORD, EMAIL, 
+	      CREATE_DATE, UPDATE_DATE)
+	    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+	      #{status,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, 
+	      #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+	      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+	  </insert>
+	 <insert id="insertSelective" parameterType="com.want.srm.entity.Account">
+        insert into ACCOUNT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+         ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>      
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.Account">
+    update ACCOUNT
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if> 
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>      
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.Account">
+    update ACCOUNT
+    set NAME = #{name,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

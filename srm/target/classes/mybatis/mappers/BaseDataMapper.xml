@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.BaseDataMapper">
+  <!-- 获取配置属性  -->
+   <select id="getAttributeInfo" parameterType="java.util.Map" resultType="com.want.srm.vo.AttributeInfoVO"> 
+		SELECT 
+		ATTRIBUTE_KEY as attributeKey ,
+		ATTRIBUTE_VALUE as attributeValue ,
+		ATTRIBUTE_ID as attributeId ,
+		ATTRIBUTE_NAME as attributeName 
+		FROM srmdb.ATTRIBUTE_INFO 
+		WHERE STATUS='1'
+		<if test="attributeKey != null and attributeKey != '' ">
+		    AND ATTRIBUTE_KEY = #{attributeKey,jdbcType=VARCHAR} 
+		</if>
+		<if test="attributeValue != null and attributeValue != '' ">
+		    AND ATTRIBUTE_VALUE = #{attributeValue,jdbcType=VARCHAR} 
+		</if>
+		<if test="attributeId != null and attributeId != '' ">
+		    AND ATTRIBUTE_ID = #{attributeId,jdbcType=VARCHAR} 
+		</if>
+		<if test="attributeName != null and attributeName != '' ">
+		    AND ATTRIBUTE_NAME = #{attributeName,jdbcType=VARCHAR} 
+		</if>
+   </select>
+   
+   <select id="getFactoryByCondition" parameterType="java.util.Map" resultType="com.want.srm.vo.FactoryVo">
+	    SELECT DISTINCT 
+	      A.FACTORY_ID as factoryId, 
+	      A.FACTORY_NAME as factoryName
+	    FROM srmdb.FACTORY A
+	    <if test="userId != null and userId != ''">
+	    INNER JOIN (
+	        SELECT DISTINCT D.VALUE
+	        FROM srmdb.ROLE_USER C 
+	        INNER JOIN srmdb.ROLE_INFO D ON C.ROLE_ID=D.ROLE_ID
+	        WHERE  D.ID='PLANT' AND C.USER_ID= #{userId,jdbcType=VARCHAR}
+		) B ON IF((B.VALUE='*'),(A.FACTORY_ID=A.FACTORY_ID),(B.VALUE=A.FACTORY_ID))
+	    </if>
+	    <where>
+			<if test="factoryId != null and factoryId != '' ">
+			    and A.FACTORY_ID = #{factoryId,jdbcType=VARCHAR} 
+			</if>
+			<if test="factoryName != null and factoryName != '' ">
+			    and A.FACTORY_NAME like "%"#{factoryName,jdbcType=VARCHAR}"%"
+			</if>	    
+	    </where>
+   </select>
+   
+   <select id="getPurchaseByCondition" parameterType="java.util.Map" resultType="com.want.srm.vo.PurchaseVO">
+	    SELECT DISTINCT 
+	      A.PURCHASE_ID as purchaseId, 
+	      A.PURCHASE_NAME as purchaseName
+	    FROM srmdb.PURCHASE A
+	    <if test="userId != null and userId != ''">
+	    INNER JOIN (
+	        SELECT DISTINCT D.VALUE
+	        FROM srmdb.ROLE_USER C 
+	        INNER JOIN srmdb.ROLE_INFO D ON C.ROLE_ID=D.ROLE_ID
+	        WHERE  D.ID='ZBBP_ORG' AND C.USER_ID= #{userId,jdbcType=VARCHAR}
+		) B ON IF((B.VALUE='*'),(A.PURCHASE_ID=A.PURCHASE_ID),(B.VALUE=A.PURCHASE_ID))
+	    </if>
+	    <where>
+			<if test="purchaseId != null and purchaseId != '' ">
+			    and A.PURCHASE_ID = #{purchaseId,jdbcType=VARCHAR} 
+			</if>
+			<if test="purchaseName != null and purchaseName != '' ">
+			    and A.PURCHASE_NAME like "%"#{purchaseName,jdbcType=VARCHAR}"%"
+			</if>	    
+	    </where>
+   </select>
+   
+   <select id="getSupplierByCondition" parameterType="java.util.Map" resultType="com.want.srm.vo.SupplierVO">
+        SELECT 
+          SUPPLIER_CODE as supplierId, 
+          SUPPLIER_NAME as supplierName
+        FROM srmdb.SUPPLIER
+        <where>
+            <if test="supplierId != null and supplierId != '' ">
+                and SUPPLIER_CODE = #{supplierId,jdbcType=VARCHAR} 
+            </if>
+            <if test="supplierName != null and supplierName != '' ">
+                and SUPPLIER_NAME like "%"#{supplierName,jdbcType=VARCHAR}"%"
+            </if>       
+        </where>
+   </select>
+   
+   <insert id="uploadFile" parameterType="com.want.srm.po.FileInofPO">
+   		insert into srmdb.ZT005 (QMNUM, GYSFKXM, FILE_NAME, 
+      	FILE_DESC, FILE_PATH, UP_DATE, UP_TIME)
+    	values (#{qmnum,jdbcType=INTEGER}, #{gysfkxm,jdbcType=VARCHAR}, 
+    	#{fileName,jdbcType=VARCHAR}, #{fileDesc,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, 
+      	#{upDate,jdbcType=VARCHAR}, #{upTime,jdbcType=VARCHAR})
+   </insert>
+   
+   <select id="checkFile" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT GYSFKXM FROM ZT005 WHERE QMNUM = #{qmnum} ORDER BY GYSFKXM DESC limit 0,1
+   </select>
+   
+   <select id="checkFileName" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT FILE_NAME FROM ZT005 WHERE QMNUM = #{qmnum}
+   </select>
+      
+</mapper>

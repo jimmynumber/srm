@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT008Dao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.ZT008">
+    <id column="DZBDH" jdbcType="VARCHAR" property="dzbdh" />
+    <result column="WERKS" jdbcType="VARCHAR" property="werks" />
+    <result column="NAME1" jdbcType="VARCHAR" property="name1" />
+    <result column="LIFNR" jdbcType="VARCHAR" property="lifnr" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="BEDAT" jdbcType="VARCHAR" property="bedat" />
+    <result column="ENDAT" jdbcType="VARCHAR" property="endat" />
+    <result column="CONFS" jdbcType="VARCHAR" property="confs" />
+    <result column="ERNAM" jdbcType="VARCHAR" property="ernam" />
+    <result column="ERDAT" jdbcType="VARCHAR" property="erdat" />
+    <result column="SEDAT" jdbcType="VARCHAR" property="sedat" />
+    <result column="CFDAT" jdbcType="VARCHAR" property="cfdat" />
+    <result column="DEDAT" jdbcType="VARCHAR" property="dedat" />
+    <result column="WAERS" jdbcType="VARCHAR" property="waers" />
+    <result column="TEXT1" jdbcType="VARCHAR" property="text1" />
+    <result column="TTLAM" jdbcType="DECIMAL" property="ttlam" />
+    <result column="TTLMI" jdbcType="DECIMAL" property="ttlmi" />
+    <result column="TTLEQ" jdbcType="DECIMAL" property="ttleq" />
+    <result column="TTLFI" jdbcType="DECIMAL" property="ttlfi" />
+    <result column="YCSDAT" jdbcType="VARCHAR" property="ycsdat" />
+    <result column="YCEDAT" jdbcType="VARCHAR" property="ycedat" />
+    <result column="ZZGBZ" jdbcType="VARCHAR" property="zzgbz" />
+    <result column="CYCSDAT" jdbcType="VARCHAR" property="cycsdat" />
+    <result column="CYCEDAT" jdbcType="VARCHAR" property="cycedat" />
+    <result column="UDBDATE" jdbcType="VARCHAR" property="udbdate" />
+    <result column="UDEDATE" jdbcType="VARCHAR" property="udedate" />
+    <result column="ZSJWERKS" jdbcType="VARCHAR" property="zsjwerks" />
+    <result column="ZSJWERKS_DESC" jdbcType="VARCHAR" property="zsjwerksDesc" />
+    <result column="BCDAT" jdbcType="VARCHAR" property="bcdat" />
+    <result column="ECDAT" jdbcType="VARCHAR" property="ecdat" />
+    <result column="TTLAM2" jdbcType="DECIMAL" property="ttlam2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DZBDH, WERKS, NAME1, LIFNR, NAME, BEDAT, ENDAT, CONFS, ERNAM, ERDAT, SEDAT, CFDAT, 
+    DEDAT, WAERS, TEXT1, TTLAM, TTLMI, TTLEQ, TTLFI, YCSDAT, YCEDAT, ZZGBZ, CYCSDAT, 
+    CYCEDAT, UDBDATE, UDEDATE, ZSJWERKS, ZSJWERKS_DESC, BCDAT, ECDAT, TTLAM2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT008
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ZT008
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.ZT008">
+    insert into ZT008 (DZBDH, WERKS, NAME1, 
+      LIFNR, NAME, BEDAT, 
+      ENDAT, CONFS, ERNAM, 
+      ERDAT, SEDAT, CFDAT, 
+      DEDAT, WAERS, TEXT1, 
+      TTLAM, TTLMI, TTLEQ, 
+      TTLFI, YCSDAT, YCEDAT, 
+      ZZGBZ, CYCSDAT, CYCEDAT, 
+      UDBDATE, UDEDATE, ZSJWERKS, 
+      ZSJWERKS_DESC, BCDAT, ECDAT, 
+      TTLAM2)
+    values (#{dzbdh,jdbcType=VARCHAR}, #{werks,jdbcType=VARCHAR}, #{name1,jdbcType=VARCHAR}, 
+      #{lifnr,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{bedat,jdbcType=VARCHAR}, 
+      #{endat,jdbcType=VARCHAR}, #{confs,jdbcType=VARCHAR}, #{ernam,jdbcType=VARCHAR}, 
+      #{erdat,jdbcType=VARCHAR}, #{sedat,jdbcType=VARCHAR}, #{cfdat,jdbcType=VARCHAR}, 
+      #{dedat,jdbcType=VARCHAR}, #{waers,jdbcType=VARCHAR}, #{text1,jdbcType=VARCHAR}, 
+      #{ttlam,jdbcType=DECIMAL}, #{ttlmi,jdbcType=DECIMAL}, #{ttleq,jdbcType=DECIMAL}, 
+      #{ttlfi,jdbcType=DECIMAL}, #{ycsdat,jdbcType=VARCHAR}, #{ycedat,jdbcType=VARCHAR}, 
+      #{zzgbz,jdbcType=VARCHAR}, #{cycsdat,jdbcType=VARCHAR}, #{cycedat,jdbcType=VARCHAR}, 
+      #{udbdate,jdbcType=VARCHAR}, #{udedate,jdbcType=VARCHAR}, #{zsjwerks,jdbcType=VARCHAR}, 
+      #{zsjwerksDesc,jdbcType=VARCHAR}, #{bcdat,jdbcType=VARCHAR}, #{ecdat,jdbcType=VARCHAR}, 
+      #{ttlam2,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.ZT008">
+    insert into ZT008
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        DZBDH,
+      </if>
+      <if test="werks != null">
+        WERKS,
+      </if>
+      <if test="name1 != null">
+        NAME1,
+      </if>
+      <if test="lifnr != null">
+        LIFNR,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="bedat != null">
+        BEDAT,
+      </if>
+      <if test="endat != null">
+        ENDAT,
+      </if>
+      <if test="confs != null">
+        CONFS,
+      </if>
+      <if test="ernam != null">
+        ERNAM,
+      </if>
+        ERDAT,
+      <if test="sedat != null">
+        SEDAT,
+      </if>
+      <if test="cfdat != null">
+        CFDAT,
+      </if>
+      <if test="dedat != null">
+        DEDAT,
+      </if>
+      <if test="waers != null">
+        WAERS,
+      </if>
+      <if test="text1 != null">
+        TEXT1,
+      </if>
+      <if test="ttlam != null">
+        TTLAM,
+      </if>
+      <if test="ttlmi != null">
+        TTLMI,
+      </if>
+      <if test="ttleq != null">
+        TTLEQ,
+      </if>
+      <if test="ttlfi != null">
+        TTLFI,
+      </if>
+      <if test="ycsdat != null">
+        YCSDAT,
+      </if>
+      <if test="ycedat != null">
+        YCEDAT,
+      </if>
+      <if test="zzgbz != null">
+        ZZGBZ,
+      </if>
+      <if test="cycsdat != null">
+        CYCSDAT,
+      </if>
+      <if test="cycedat != null">
+        CYCEDAT,
+      </if>
+      <if test="udbdate != null">
+        UDBDATE,
+      </if>
+      <if test="udedate != null">
+        UDEDATE,
+      </if>
+      <if test="zsjwerks != null">
+        ZSJWERKS,
+      </if>
+      <if test="zsjwerksDesc != null">
+        ZSJWERKS_DESC,
+      </if>
+      <if test="bcdat != null">
+        BCDAT,
+      </if>
+      <if test="ecdat != null">
+        ECDAT,
+      </if>
+      <if test="ttlam2 != null">
+        TTLAM2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        #{dzbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="werks != null">
+        #{werks,jdbcType=VARCHAR},
+      </if>
+      <if test="name1 != null">
+        #{name1,jdbcType=VARCHAR},
+      </if>
+      <if test="lifnr != null">
+        #{lifnr,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bedat != null">
+        #{bedat,jdbcType=VARCHAR},
+      </if>
+      <if test="endat != null">
+        #{endat,jdbcType=VARCHAR},
+      </if>
+      <if test="confs != null">
+        #{confs,jdbcType=VARCHAR},
+      </if>
+      <if test="ernam != null">
+        #{ernam,jdbcType=VARCHAR},
+      </if>
+      date_format(now(), '%Y-%m-%d %H:%i:%s'),
+      <if test="sedat != null">
+        #{sedat,jdbcType=VARCHAR},
+      </if>
+      <if test="cfdat != null">
+        #{cfdat,jdbcType=VARCHAR},
+      </if>
+      <if test="dedat != null">
+        #{dedat,jdbcType=VARCHAR},
+      </if>
+      <if test="waers != null">
+        #{waers,jdbcType=VARCHAR},
+      </if>
+      <if test="text1 != null">
+        #{text1,jdbcType=VARCHAR},
+      </if>
+      <if test="ttlam != null">
+        #{ttlam,jdbcType=DECIMAL},
+      </if>
+      <if test="ttlmi != null">
+        #{ttlmi,jdbcType=DECIMAL},
+      </if>
+      <if test="ttleq != null">
+        #{ttleq,jdbcType=DECIMAL},
+      </if>
+      <if test="ttlfi != null">
+        #{ttlfi,jdbcType=DECIMAL},
+      </if>
+      <if test="ycsdat != null">
+        #{ycsdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ycedat != null">
+        #{ycedat,jdbcType=VARCHAR},
+      </if>
+      <if test="zzgbz != null">
+        #{zzgbz,jdbcType=VARCHAR},
+      </if>
+      <if test="cycsdat != null">
+        #{cycsdat,jdbcType=VARCHAR},
+      </if>
+      <if test="cycedat != null">
+        #{cycedat,jdbcType=VARCHAR},
+      </if>
+      <if test="udbdate != null">
+        #{udbdate,jdbcType=VARCHAR},
+      </if>
+      <if test="udedate != null">
+        #{udedate,jdbcType=VARCHAR},
+      </if>
+      <if test="zsjwerks != null">
+        #{zsjwerks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsjwerksDesc != null">
+        #{zsjwerksDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bcdat != null">
+        #{bcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ecdat != null">
+        #{ecdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ttlam2 != null">
+        #{ttlam2,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.ZT008">
+    update ZT008
+    <set>
+      <if test="werks != null">
+        WERKS = #{werks,jdbcType=VARCHAR},
+      </if>
+      <if test="name1 != null">
+        NAME1 = #{name1,jdbcType=VARCHAR},
+      </if>
+      <if test="lifnr != null">
+        LIFNR = #{lifnr,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bedat != null">
+        BEDAT = #{bedat,jdbcType=VARCHAR},
+      </if>
+      <if test="endat != null">
+        ENDAT = #{endat,jdbcType=VARCHAR},
+      </if>
+      <if test="confs != null">
+        CONFS = #{confs,jdbcType=VARCHAR},
+      </if>
+      <if test="ernam != null">
+        ERNAM = #{ernam,jdbcType=VARCHAR},
+      </if>
+      <if test="erdat != null">
+        ERDAT = #{erdat,jdbcType=VARCHAR},
+      </if>
+      <if test="sedat != null">
+        SEDAT = #{sedat,jdbcType=VARCHAR},
+      </if>
+      <if test="cfdat != null">
+        CFDAT = #{cfdat,jdbcType=VARCHAR},
+      </if>
+      <if test="dedat != null">
+        DEDAT = #{dedat,jdbcType=VARCHAR},
+      </if>
+      <if test="waers != null">
+        WAERS = #{waers,jdbcType=VARCHAR},
+      </if>
+      <if test="text1 != null">
+        TEXT1 = #{text1,jdbcType=VARCHAR},
+      </if>
+      <if test="ttlam != null">
+        TTLAM = #{ttlam,jdbcType=DECIMAL},
+      </if>
+      <if test="ttlmi != null">
+        TTLMI = #{ttlmi,jdbcType=DECIMAL},
+      </if>
+      <if test="ttleq != null">
+        TTLEQ = #{ttleq,jdbcType=DECIMAL},
+      </if>
+      <if test="ttlfi != null">
+        TTLFI = #{ttlfi,jdbcType=DECIMAL},
+      </if>
+      <if test="ycsdat != null">
+        YCSDAT = #{ycsdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ycedat != null">
+        YCEDAT = #{ycedat,jdbcType=VARCHAR},
+      </if>
+      <if test="zzgbz != null">
+        ZZGBZ = #{zzgbz,jdbcType=VARCHAR},
+      </if>
+      <if test="cycsdat != null">
+        CYCSDAT = #{cycsdat,jdbcType=VARCHAR},
+      </if>
+      <if test="cycedat != null">
+        CYCEDAT = #{cycedat,jdbcType=VARCHAR},
+      </if>
+      <if test="udbdate != null">
+        UDBDATE = #{udbdate,jdbcType=VARCHAR},
+      </if>
+      <if test="udedate != null">
+        UDEDATE = #{udedate,jdbcType=VARCHAR},
+      </if>
+      <if test="zsjwerks != null">
+        ZSJWERKS = #{zsjwerks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsjwerksDesc != null">
+        ZSJWERKS_DESC = #{zsjwerksDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bcdat != null">
+        BCDAT = #{bcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ecdat != null">
+        ECDAT = #{ecdat,jdbcType=VARCHAR},
+      </if>
+      <if test="ttlam2 != null">
+        TTLAM2 = #{ttlam2,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.ZT008">
+    update ZT008
+    set WERKS = #{werks,jdbcType=VARCHAR},
+      NAME1 = #{name1,jdbcType=VARCHAR},
+      LIFNR = #{lifnr,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      BEDAT = #{bedat,jdbcType=VARCHAR},
+      ENDAT = #{endat,jdbcType=VARCHAR},
+      CONFS = #{confs,jdbcType=VARCHAR},
+      ERNAM = #{ernam,jdbcType=VARCHAR},
+      ERDAT = #{erdat,jdbcType=VARCHAR},
+      SEDAT = #{sedat,jdbcType=VARCHAR},
+      CFDAT = #{cfdat,jdbcType=VARCHAR},
+      DEDAT = #{dedat,jdbcType=VARCHAR},
+      WAERS = #{waers,jdbcType=VARCHAR},
+      TEXT1 = #{text1,jdbcType=VARCHAR},
+      TTLAM = #{ttlam,jdbcType=DECIMAL},
+      TTLMI = #{ttlmi,jdbcType=DECIMAL},
+      TTLEQ = #{ttleq,jdbcType=DECIMAL},
+      TTLFI = #{ttlfi,jdbcType=DECIMAL},
+      YCSDAT = #{ycsdat,jdbcType=VARCHAR},
+      YCEDAT = #{ycedat,jdbcType=VARCHAR},
+      ZZGBZ = #{zzgbz,jdbcType=VARCHAR},
+      CYCSDAT = #{cycsdat,jdbcType=VARCHAR},
+      CYCEDAT = #{cycedat,jdbcType=VARCHAR},
+      UDBDATE = #{udbdate,jdbcType=VARCHAR},
+      UDEDATE = #{udedate,jdbcType=VARCHAR},
+      ZSJWERKS = #{zsjwerks,jdbcType=VARCHAR},
+      ZSJWERKS_DESC = #{zsjwerksDesc,jdbcType=VARCHAR},
+      BCDAT = #{bcdat,jdbcType=VARCHAR},
+      ECDAT = #{ecdat,jdbcType=VARCHAR},
+      TTLAM2 = #{ttlam2,jdbcType=DECIMAL}
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </update>
+</mapper>

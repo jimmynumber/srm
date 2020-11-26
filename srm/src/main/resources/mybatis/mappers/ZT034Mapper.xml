@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT034Dao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.ZT034">
+    <id column="DZBDH" jdbcType="VARCHAR" property="dzbdh" />
+    <id column="DZBMQ" jdbcType="VARCHAR" property="dzbmq" />
+    <result column="QMNUM" jdbcType="VARCHAR" property="qmnum" />
+    <result column="ERDAT" jdbcType="VARCHAR" property="erdat" />
+    <result column="BDWCDAT" jdbcType="VARCHAR" property="bdwcdat" />
+    <result column="MGEIG" jdbcType="DECIMAL" property="mgeig" />
+    <result column="PCJE" jdbcType="DECIMAL" property="pcje" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DZBDH, DZBMQ, QMNUM, ERDAT, BDWCDAT, MGEIG, PCJE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.want.srm.entity.ZT034Key" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT034
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMQ = #{dzbmq,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.want.srm.entity.ZT034Key">
+    delete from ZT034
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMQ = #{dzbmq,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.ZT034">
+    insert into ZT034 (DZBDH, DZBMQ, QMNUM, 
+      ERDAT, BDWCDAT, MGEIG, 
+      PCJE)
+    values (#{dzbdh,jdbcType=VARCHAR}, #{dzbmq,jdbcType=VARCHAR}, #{qmnum,jdbcType=VARCHAR}, 
+      #{erdat,jdbcType=VARCHAR}, #{bdwcdat,jdbcType=VARCHAR}, #{mgeig,jdbcType=DECIMAL}, 
+      #{pcje,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.ZT034">
+    insert into ZT034
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        DZBDH,
+      </if>
+      <if test="dzbmq != null">
+        DZBMQ,
+      </if>
+      <if test="qmnum != null">
+        QMNUM,
+      </if>
+      <if test="erdat != null">
+        ERDAT,
+      </if>
+      <if test="bdwcdat != null">
+        BDWCDAT,
+      </if>
+      <if test="mgeig != null">
+        MGEIG,
+      </if>
+      <if test="pcje != null">
+        PCJE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        #{dzbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="dzbmq != null">
+        #{dzbmq,jdbcType=VARCHAR},
+      </if>
+      <if test="qmnum != null">
+        #{qmnum,jdbcType=VARCHAR},
+      </if>
+      <if test="erdat != null">
+        #{erdat,jdbcType=VARCHAR},
+      </if>
+      <if test="bdwcdat != null">
+        #{bdwcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="mgeig != null">
+        #{mgeig,jdbcType=DECIMAL},
+      </if>
+      <if test="pcje != null">
+        #{pcje,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.ZT034">
+    update ZT034
+    <set>
+      <if test="qmnum != null">
+        QMNUM = #{qmnum,jdbcType=VARCHAR},
+      </if>
+      <if test="erdat != null">
+        ERDAT = #{erdat,jdbcType=VARCHAR},
+      </if>
+      <if test="bdwcdat != null">
+        BDWCDAT = #{bdwcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="mgeig != null">
+        MGEIG = #{mgeig,jdbcType=DECIMAL},
+      </if>
+      <if test="pcje != null">
+        PCJE = #{pcje,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMQ = #{dzbmq,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.ZT034">
+    update ZT034
+    set QMNUM = #{qmnum,jdbcType=VARCHAR},
+      ERDAT = #{erdat,jdbcType=VARCHAR},
+      BDWCDAT = #{bdwcdat,jdbcType=VARCHAR},
+      MGEIG = #{mgeig,jdbcType=DECIMAL},
+      PCJE = #{pcje,jdbcType=DECIMAL}
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMQ = #{dzbmq,jdbcType=VARCHAR}
+  </update>
+</mapper>

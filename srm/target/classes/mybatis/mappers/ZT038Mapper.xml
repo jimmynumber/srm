@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT038Dao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.ZT038">
+    <id column="DZBDH" jdbcType="VARCHAR" property="dzbdh" />
+    <id column="DZBMS2" jdbcType="VARCHAR" property="dzbms2" />
+    <result column="MATNR" jdbcType="VARCHAR" property="matnr" />
+    <result column="MAKTX" jdbcType="VARCHAR" property="maktx" />
+    <result column="BPMNG" jdbcType="DECIMAL" property="bpmng" />
+    <result column="MSEHL" jdbcType="VARCHAR" property="msehl" />
+    <result column="MENGE" jdbcType="DECIMAL" property="menge" />
+    <result column="MSEHS" jdbcType="VARCHAR" property="msehs" />
+    <result column="DMBTR1" jdbcType="DECIMAL" property="dmbtr1" />
+    <result column="DMBTR" jdbcType="DECIMAL" property="dmbtr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DZBDH, DZBMS2, MATNR, MAKTX, BPMNG, MSEHL, MENGE, MSEHS, DMBTR1, DMBTR
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.want.srm.entity.ZT038Key" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT038
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS2 = #{dzbms2,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.want.srm.entity.ZT038Key">
+    delete from ZT038
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS2 = #{dzbms2,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.ZT038">
+    insert into ZT038 (DZBDH, DZBMS2, MATNR, 
+      MAKTX, BPMNG, MSEHL, 
+      MENGE, MSEHS, DMBTR1, 
+      DMBTR)
+    values (#{dzbdh,jdbcType=VARCHAR}, #{dzbms2,jdbcType=VARCHAR}, #{matnr,jdbcType=VARCHAR}, 
+      #{maktx,jdbcType=VARCHAR}, #{bpmng,jdbcType=DECIMAL}, #{msehl,jdbcType=VARCHAR}, 
+      #{menge,jdbcType=DECIMAL}, #{msehs,jdbcType=VARCHAR}, #{dmbtr1,jdbcType=DECIMAL}, 
+      #{dmbtr,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.ZT038">
+    insert into ZT038
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        DZBDH,
+      </if>
+      <if test="dzbms2 != null">
+        DZBMS2,
+      </if>
+      <if test="matnr != null">
+        MATNR,
+      </if>
+      <if test="maktx != null">
+        MAKTX,
+      </if>
+      <if test="bpmng != null">
+        BPMNG,
+      </if>
+      <if test="msehl != null">
+        MSEHL,
+      </if>
+      <if test="menge != null">
+        MENGE,
+      </if>
+      <if test="msehs != null">
+        MSEHS,
+      </if>
+      <if test="dmbtr1 != null">
+        DMBTR1,
+      </if>
+      <if test="dmbtr != null">
+        DMBTR,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        #{dzbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="dzbms2 != null">
+        #{dzbms2,jdbcType=VARCHAR},
+      </if>
+      <if test="matnr != null">
+        #{matnr,jdbcType=VARCHAR},
+      </if>
+      <if test="maktx != null">
+        #{maktx,jdbcType=VARCHAR},
+      </if>
+      <if test="bpmng != null">
+        #{bpmng,jdbcType=DECIMAL},
+      </if>
+      <if test="msehl != null">
+        #{msehl,jdbcType=VARCHAR},
+      </if>
+      <if test="menge != null">
+        #{menge,jdbcType=DECIMAL},
+      </if>
+      <if test="msehs != null">
+        #{msehs,jdbcType=VARCHAR},
+      </if>
+      <if test="dmbtr1 != null">
+        #{dmbtr1,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr != null">
+        #{dmbtr,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.ZT038">
+    update ZT038
+    <set>
+      <if test="matnr != null">
+        MATNR = #{matnr,jdbcType=VARCHAR},
+      </if>
+      <if test="maktx != null">
+        MAKTX = #{maktx,jdbcType=VARCHAR},
+      </if>
+      <if test="bpmng != null">
+        BPMNG = #{bpmng,jdbcType=DECIMAL},
+      </if>
+      <if test="msehl != null">
+        MSEHL = #{msehl,jdbcType=VARCHAR},
+      </if>
+      <if test="menge != null">
+        MENGE = #{menge,jdbcType=DECIMAL},
+      </if>
+      <if test="msehs != null">
+        MSEHS = #{msehs,jdbcType=VARCHAR},
+      </if>
+      <if test="dmbtr1 != null">
+        DMBTR1 = #{dmbtr1,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr != null">
+        DMBTR = #{dmbtr,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS2 = #{dzbms2,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.ZT038">
+    update ZT038
+    set MATNR = #{matnr,jdbcType=VARCHAR},
+      MAKTX = #{maktx,jdbcType=VARCHAR},
+      BPMNG = #{bpmng,jdbcType=DECIMAL},
+      MSEHL = #{msehl,jdbcType=VARCHAR},
+      MENGE = #{menge,jdbcType=DECIMAL},
+      MSEHS = #{msehs,jdbcType=VARCHAR},
+      DMBTR1 = #{dmbtr1,jdbcType=DECIMAL},
+      DMBTR = #{dmbtr,jdbcType=DECIMAL}
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS2 = #{dzbms2,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,69 @@
+POST http://localhost:8080/srm/basedata/getAttributeInfo
+Content-Type application/json
+
+--- 参数  {"result_type":"处理机结果","exception_type":"异常类别","exception_state":"缺陷反馈单状态"}
+{
+    "attributeId":"result_type"
+}
+    
+http://localhost:8080/srm/basedata/getFactoryByCondition
+Content-Type application/json
+
+--- 参数  
+{
+    "factoryId":"C141",
+    "factoryName":"州分"
+} 
+ 
+http://localhost:8080/srm/basedata/getSupplierByCondition
+Content-Type application/json
+
+--- 参数  
+{
+    "supplierId":"0061000000",
+    "supplierName":"旺旺地产筹备处"
+}
+  
+http://localhost:8080/srm/abnormalorder/queryAbnormalOrderByCondition    
+Content-Type application/json
+--- 参数
+
+{
+  "factoryIds":""
+}
+
+http://localhost:8080/srm/abnormalorder/queryAbnormalOrderByQmnum
+Content-Type application/json
+
+body
+    x-www-form-urlencoded
+--- 参数
+qmnum=11
+
+http://localhost:8080/srm/abnormalorder/modifyAbnormalOrderByKey
+Content-Type application/json
+
+--- 参数
+{
+"qmnum":"11",
+"gysfkzt":"pl",
+"gysdat":"pl",
+"gysfkdat":"pl",
+"ycfx":"pl",
+"yccl":"pl",
+"gsfs":"",
+"clfs":"pl",
+"pcje":"pl",
+"bz":"pl",
+"bdwcdat":"pl",
+"phyy":"pl",
+"aedat":"ds",
+"bycd":"pl",
+"senam":"pl",
+"clfsDes":"pl"
+}
+
+
+
+
+

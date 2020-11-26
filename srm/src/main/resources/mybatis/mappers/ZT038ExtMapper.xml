@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT038Dao">
+  <select id="selectListByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT038
+    where DZBDH = #{statementCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectZT038ListBydzbdh" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT038
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR} order by DZBMS2+0
+  </select>
+  
+  <insert id="insertList">
+    insert into ZT038 (DZBDH, DZBMS2, MATNR, 
+      MAKTX, BPMNG, MSEHL, 
+      MENGE, MSEHS, DMBTR1, 
+      DMBTR)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.dzbdh,jdbcType=VARCHAR}, #{item.dzbms2,jdbcType=VARCHAR}, #{item.matnr,jdbcType=VARCHAR}, 
+      #{item.maktx,jdbcType=VARCHAR}, #{item.bpmng,jdbcType=VARCHAR}, #{item.msehl,jdbcType=VARCHAR}, 
+      #{item.menge,jdbcType=VARCHAR}, #{item.msehs,jdbcType=VARCHAR}, #{item.dmbtr1,jdbcType=VARCHAR}, 
+      #{item.dmbtr,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+  <select id="selectNextId" resultType="java.lang.String">
+  	SELECT CAST(DZBMS2+1 AS CHAR) AS mid from srmdb.ZT038 ORDER BY DZBMS2+0 DESC limit 0,1
+  </select>
+</mapper>

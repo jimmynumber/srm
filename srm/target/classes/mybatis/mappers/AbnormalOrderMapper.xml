@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.AbnormalOrderMapper">
+  
+  <select id="queryAbnormalOrderByCondition" resultType="com.want.srm.vo.ZT003VO" parameterType="com.want.srm.po.AbnormalOrderPO">
+          SELECT
+            a.QMNUM as qmnum,
+            a.PRUEFLOS as prueflos,
+            a.ART as art,
+            a.MATNR as matnr,
+            a.WERKS as werks,
+            a.LIFNR as lifnr,
+            a.MGEIN as mgein,
+            a.EBELN as ebeln,
+            a.EBELP as ebelp,
+            a.CHARG as charg,
+            a.MBLNR as mblnr,
+            a.BUZEI as buzei,
+            replace(LEFT(a.BUDAT,10),'0000-00-00','') as budat,
+            a.RKMNG as rkmng,
+            a.MENGE as menge,
+            a.LICHN as lichn,
+            a.MGEIG as mgeig,
+            a.GROES as groes,
+            a.QMART as qmart,
+            attr1.ATTRIBUTE_VALUE as qmartDesc,
+            a.QMTXT as qmtxt,
+            a.MAKTX as maktx,
+            a.WERKS_NAME as werksName,
+            a.LIFNR_NAME as lifnrName,
+            a.GYSFKZT as gysfkzt,
+            attr2.ATTRIBUTE_VALUE as gysfkztDesc,
+            replace(LEFT(a.ERDAT,10),'0000-00-00','') as erdat,
+            replace(LEFT(a.GYSDAT,10),'0000-00-00','') as gysdat,
+            replace(LEFT(a.GYSFKDAT,10),'0000-00-00','') as gysfkdat,
+            a.YCFX as ycfx,
+            a.YCCL as yccl,
+            a.GSFS as gsfs,
+            a.CLFS as clfs,
+            a.PCJE as pcje,
+            a.BZ as bz,
+            a.WAERS as waers,
+            replace(LEFT(a.BDWCDAT,10),'0000-00-00','') as bdwcdat,
+            a.PHYY as phyy,
+            a.GJAHR as gjahr,
+            replace(LEFT(a.AEDAT,10),'0000-00-00','') as aedat,
+            replace(LEFT(a.AEDAT1,10),'0000-00-00','') as aedat1,
+            a.AEZEIT as aezeit,
+            a.BYCD as bycd,
+            a.SENAM as senam,
+            a.ZSJWERKS as zsjwerks,
+            a.ZSJWERKS_DESC as zsjwerksDesc,
+            a.EBELN1 as ebeln1,
+            a.EBELP1 as ebelp1,
+            a.MBLNR1 as mblnr1,
+            a.MBLPO1 as mblpo1,
+            attr3.ATTRIBUTE_VALUE as clfsDesName,
+            a.CLFS_DES as clfsDes
+        FROM srmdb.ZT003  a
+        left join srmdb.ATTRIBUTE_INFO attr1 on attr1.ATTRIBUTE_ID='exception_type' and  a.QMART=attr1.ATTRIBUTE_KEY
+        left join srmdb.ATTRIBUTE_INFO attr2 on attr2.ATTRIBUTE_ID='exception_state' and  a.GYSFKZT=attr2.ATTRIBUTE_KEY
+        left join srmdb.ATTRIBUTE_INFO attr3 on attr3.ATTRIBUTE_ID='result_type' and  a.CLFS_DES=attr3.ATTRIBUTE_KEY
+        <where>
+			    <if test="qmnum != null and qmnum != '' "> 
+					and  QMNUM =#{qmnum,jdbcType=VARCHAR}    
+				</if>	            
+               <if test=" factoryIds != null and  factoryIds != '' " > 
+                   and WERKS in  
+                   <foreach item="item" collection="factoryIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" stateIds != null and  stateIds != '' " > 
+                   and GYSFKZT in  
+                   <foreach item="item" collection="stateIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" typeIds != null and  typeIds != '' " > 
+                   and QMART in  
+                   <foreach item="item" collection="typeIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" orderCodeLineId != null and  orderCodeLineId != '' " > 
+                   and EBELP in  
+                   <foreach item="item" collection="orderCodeLineId.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" supplierIds != null and  supplierIds != '' " > 
+                   and LIFNR in  
+                   <foreach item="item" collection="supplierIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" actualFactoryIds != null and  actualFactoryIds != '' " > 
+                   and ZSJWERKS in  
+                   <foreach item="item" collection="actualFactoryIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test="materialDes != null and materialDes != '' ">
+                   and MAKTX like "%"#{materialDes,jdbcType=VARCHAR}"%"
+               </if>
+               <!-- 
+               <if test="supplierName != null and supplierName != '' ">
+                    and LIFNR_NAME like "%"#{supplierName,jdbcType=VARCHAR}"%"
+               </if>   
+                -->                                                                                                             
+               <choose>
+                   <when test=" createDate_s != null and createDate_s != ''
+                                    and createDate_e != null and createDate_e != '' ">
+                        and left(ERDAT,10) BETWEEN replace(#{createDate_s,jdbcType=VARCHAR},' ','') AND replace(#{createDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" createDate_s != null and  createDate_s != '' " > 
+                           and left(ERDAT,10)  in  
+                           <foreach item="item" collection="createDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>  
+               <choose>
+                   <when test=" finishDate_s != null and finishDate_s != ''
+                                    and finishDate_e != null and finishDate_e != '' ">
+                        and left(BDWCDAT,10) BETWEEN replace(#{finishDate_s,jdbcType=VARCHAR},' ','') AND replace(#{finishDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" finishDate_s != null and  finishDate_s != '' " > 
+                           and left(BDWCDAT,10)  in  
+                           <foreach item="item" collection="finishDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>   
+               <choose>
+                   <when test=" noticeCode_s != null and noticeCode_s != ''
+                                    and noticeCode_e != null and noticeCode_e != '' ">
+                        and QMNUM BETWEEN replace(#{noticeCode_s,jdbcType=VARCHAR},' ','') AND replace(#{noticeCode_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" noticeCode_s != null and  noticeCode_s != '' " > 
+                           and QMNUM in  
+                           <foreach item="item" collection="noticeCode_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test=" orderCode_s != null and orderCode_s != ''
+                                    and orderCode_e != null and orderCode_e != '' ">
+                        and EBELN BETWEEN replace(#{orderCode_s,jdbcType=VARCHAR},' ','') AND replace(#{orderCode_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" orderCode_s != null and  orderCode_s != '' " > 
+                           and EBELN in  
+                           <foreach item="item" collection="orderCode_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test=" sendDate_s != null and sendDate_s != ''
+                                    and sendDate_e != null and sendDate_e != '' ">
+                        and left(GYSDAT,10) BETWEEN replace(#{sendDate_s,jdbcType=VARCHAR},' ','') AND replace(#{sendDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" sendDate_s != null and  sendDate_s != '' " > 
+                           and left(GYSDAT,10) in  
+                           <foreach item="item" collection="sendDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>                                                               
+        </where>
+  </select>  
+  
+  <select id="queryAbnormalOrderByQmnum" parameterType="java.lang.String" resultType="com.want.srm.vo.ZT001VO$ZT001" >
+     SELECT
+        QMNUM as qmnum,
+        FENUM as fenum,
+        FECOD as fecod,
+        FEGRP as fegrp,
+        FEQKLAS as feqklas,
+        attr1.ATTRIBUTE_VALUE as feqklasDesc,
+        FEGRP_NAME as fegrpName,
+        FECOD_NAME as fecodName,
+        UP_USER as upUser,
+        UP_DATE as "upDate",
+        UP_TIME as upTime
+    FROM srmdb.ZT001 a
+    left join srmdb.ATTRIBUTE_INFO attr1 on attr1.ATTRIBUTE_ID='exception_feqklas' and  a.FEQKLAS=attr1.ATTRIBUTE_KEY
+	<where>
+		    <if test="qmnum != null and qmnum != '' "> 
+				 QMNUM =#{qmnum,jdbcType=VARCHAR}    
+			</if>		
+	</where>
+  </select>
+  
+   <update id="modifyAbnormalOrderByKey" parameterType="com.want.srm.po.AbnormalOrderModifyPO">
+	    <if test="qmnum != null and qmnum != ''" >
+	        update srmdb.ZT003
+		    <set>
+			    <choose>
+			          <when test="'B'.toString() == gysfkzt.toString() ">
+			          	<choose>
+			          		<when test="'A'.toString() == gysfkzt_b.toString() or 'D'.toString() == gysfkzt_b.toString()">
+						            GYSDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'), 
+						        <if test="bz != null and bz != ''" >BZ = #{bz,jdbcType=VARCHAR}, </if>
+						            AEDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'), 
+						        <if test="bycd != null and bycd != ''" >BYCD = #{bycd,jdbcType=VARCHAR}, </if>        
+						        <if test="senam != null and senam != ''" >SENAM = #{senam,jdbcType=VARCHAR}, </if>			          		
+			          		</when>	
+			          		<when test="'C'.toString() == gysfkzt_b.toString()">
+				                <if test="pcje != null and pcje != ''" >PCJE = #{pcje,jdbcType=VARCHAR}, </if>
+				                <if test="bz != null and bz != ''" >BZ = #{bz,jdbcType=VARCHAR}, </if>   
+				                <if test="phyy != null and phyy != ''" >PHYY = #{phyy,jdbcType=VARCHAR}, </if>  
+				                    AEDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'),
+				                <if test="bycd != null and bycd != ''" >BYCD = #{bycd,jdbcType=VARCHAR}, </if>   
+				                <if test="clfs != null and clfs != ''" > CLFS = #{clfs,jdbcType=VARCHAR},</if>
+							    <if test="clfsDes != null and clfsDes != ''" > CLFS_DES = #{clfsDes,jdbcType=VARCHAR},</if>			          			
+			          		</when>	
+			          	</choose>			          
+			          </when>
+			          <when test="'C'.toString() == gysfkzt.toString() ">
+			          	<choose>
+			          		<when test="'B'.toString() == gysfkzt_b.toString()">
+				                <if test="ycfx != null and ycfx != ''" >YCFX = #{ycfx,jdbcType=VARCHAR}, </if>
+				                <if test="yccl != null and yccl != ''" >YCCL = #{yccl,jdbcType=VARCHAR}, </if>
+				                <if test="gsfs != null and gsfs != ''" >GSFS = #{gsfs,jdbcType=VARCHAR}, </if>
+				                GYSFKDAT= date_format(now(), '%Y-%m-%d %H:%i:%s'),         
+				                AEDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'), 			          		
+			          		</when>	
+			          		<when test="'Z'.toString() == gysfkzt_b.toString()">
+								 BDWCDAT =null,
+								 AEDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'),			          		
+			          		</when>	
+			          	</choose>
+			          </when>
+	                  <when test="'Z'.toString() == gysfkzt.toString() ">
+						<if test="clfs != null and clfs != ''" > CLFS = #{clfs,jdbcType=VARCHAR},</if>     
+						<if test="pcje != null and pcje != ''" > PCJE = #{pcje,jdbcType=VARCHAR},</if>	
+						<if test="bz != null and bz != ''" > BZ = #{bz,jdbcType=VARCHAR},</if>							              
+	                        BDWCDAT = date_format(now(), '%Y-%m-%d %H:%i:%s'),
+	                        AEDAT  = date_format(now(), '%Y-%m-%d %H:%i:%s'),
+						<if test="bycd != null and bycd != ''" > BYCD = #{bycd,jdbcType=VARCHAR},</if>       
+						<if test="clfsDes != null and clfsDes != ''" > CLFS_DES = #{clfsDes,jdbcType=VARCHAR},</if>	
+						<if test="phyy != null and phyy != ''" >PHYY = #{phyy,jdbcType=VARCHAR}, </if>			                  
+	                  </when>		    
+			    </choose>
+			    <if test="gysfkzt != null and gysfkzt != ''" >GYSFKZT = #{gysfkzt,jdbcType=VARCHAR}, </if> 		    
+		    </set>
+		    where QMNUM = #{qmnum,jdbcType=VARCHAR}
+	    </if>
+   </update>
+   
+   <select id="queryAbnormalOrderByParam" resultType="com.want.srm.vo.ZT003VO" parameterType="java.util.Map">
+        SELECT
+            QMNUM as qmnum,
+            PRUEFLOS as prueflos,
+            ART as art,
+            MATNR as matnr,
+            WERKS as werks,
+            LIFNR as lifnr,
+            MGEIN as mgein,
+            EBELN as ebeln,
+            EBELP as ebelp,
+            CHARG as charg,
+            MBLNR as mblnr,
+            BUZEI as buzei,
+            BUDAT as budat,
+            RKMNG as rkmng,
+            MENGE as menge,
+            LICHN as lichn,
+            MGEIG as mgeig,
+            GROES as groes,
+            QMART as qmart,
+            QMTXT as qmtxt,
+            MAKTX as maktx,
+            WERKS_NAME as werksName,
+            LIFNR_NAME as lifnrName,
+            GYSFKZT as gysfkzt,
+            ERDAT as erdat,
+            GYSDAT as gysdat,
+            GYSFKDAT as gysfkdat,
+            YCFX as ycfx,
+            YCCL as yccl,
+            GSFS as gsfs,
+            CLFS as clfs,
+            PCJE as pcje,
+            BZ as bz,
+            WAERS as waers,
+            BDWCDAT as bdwcdat,
+            PHYY as phyy,
+            GJAHR as gjahr,
+            AEDAT as aedat,
+            AEDAT1 as aedat1,
+            AEZEIT as aezeit,
+            BYCD as bycd,
+            SENAM as senam,
+            ZSJWERKS as zsjwerks,
+            ZSJWERKS_DESC as zsjwerksDesc,
+            EBELN1 as ebeln1,
+            EBELP1 as ebelp1,
+            MBLNR1 as mblnr1,
+            MBLPO1 as mblpo1,
+            CLFS_DES as clfsDes
+        FROM srmdb.ZT003  
+        <where>
+            <if test=" qmart != null and  qmart != '' " > 
+               and QMART in  
+               <foreach item="item" collection="qmart.split(',|，')" open="(" separator="," close=")">
+                        replace(#{item},' ','')
+               </foreach>
+            </if> 
+			<if test="gysfkzt != null and gysfkzt != '' "> and  GYSFKZT = #{gysfkzt,jdbcType=VARCHAR} </if>
+			<if test="gysfkzt_ne != null and gysfkzt_ne != '' "> and  GYSFKZT != #{gysfkzt_ne,jdbcType=VARCHAR} </if>
+
+	        <if test="mblnr != null and mblnr != '' "> and  MBLNR =#{mblnr,jdbcType=VARCHAR} </if>
+			<if test="buzei != null and buzei != '' "> and  BUZEI =#{buzei,jdbcType=VARCHAR} </if>
+			<if test="gjahr != null and gjahr != '' "> and  GJAHR =#{gjahr,jdbcType=VARCHAR} </if>
+			
+			<if test="werks != null and werks != '' "> and  WERKS =#{werks,jdbcType=VARCHAR} </if>
+			<if test="lifnr != null and lifnr != '' "> and  LIFNR =#{lifnr,jdbcType=VARCHAR} </if>
+            <choose>
+                <when test=" matnr_s != null and matnr_s != ''
+                                 and matnr_e != null and matnr_e != '' ">
+                     and MATNR BETWEEN replace(#{matnr_s,jdbcType=VARCHAR},' ','') AND replace(#{matnr_e,jdbcType=VARCHAR},' ','')
+                </when>
+                <otherwise>
+                   <if test=" matnr_s != null and  matnr_s != '' " > 
+                        and MATNR  in  
+                        <foreach item="item" collection="matnr_s.split(',|，')" open="(" separator="," close=")">
+                           replace(#{item},' ','')
+                       </foreach>
+                  </if>
+                </otherwise>
+            </choose>	
+					
+			<if test=" cycsdat != null and cycsdat != '' and cycedat != null and cycedat != '' "> 
+			     and LEFT(BDWCDAT,10) BETWEEN replace(#{cycsdat,jdbcType=VARCHAR},' ','') AND replace(#{cycedat,jdbcType=VARCHAR},' ','')
+			</if>
+			<if test="zsjwerks != null and zsjwerks != '' "> 
+               and ZSJWERKS in  
+               <foreach item="item" collection="zsjwerks.split(',|，')" open="(" separator="," close=")">
+                         replace(#{item},' ','')
+               </foreach>			
+			</if>			
+        </where>
+
+   </select>
+   
+    <select id="findZT005ByCondition" parameterType="java.lang.String" resultType="com.want.srm.po.FileInofPO">
+	   SELECT
+		    FILE_NAME as fileName,
+		    FILE_PATH as filePath
+	   FROM srmdb.ZT005
+	   where QMNUM =#{qmnum,jdbcType=VARCHAR} and GYSFKXM=#{gysfkxm,jdbcType=VARCHAR}
+   </select>
+   
+   
+   <delete id="deleteZT005" parameterType="java.lang.String">
+   	    delete from srmdb.ZT005 where QMNUM =#{qmnum,jdbcType=VARCHAR} and GYSFKXM=#{gysfkxm,jdbcType=VARCHAR}
+   </delete>
+   
+   <select id="queryZT005ByParams" parameterType="java.util.Map" resultType="com.want.srm.po.FileInofPO">
+	   SELECT
+		    QMNUM as qmnum,
+		    GYSFKXM as gysfkxm,
+		    GYSFKXM as lineNum,
+		    FILE_NAME as fileName,
+		    FILE_DESC as fileDesc,
+		    FILE_PATH as filePath,
+		    UP_DATE as 'upDate',
+		    UP_TIME as upTime
+	   FROM srmdb.ZT005
+	   <where>
+		    <if test="qmnum != null and qmnum != '' "> and  QMNUM =#{qmnum,jdbcType=VARCHAR} </if>
+			<if test="gysfkxm != null and gysfkxm != '' "> and  GYSFKXM =#{gysfkxm,jdbcType=VARCHAR} </if>
+			<if test="fileName != null and fileName != '' "> and  FILE_NAME =#{fileName,jdbcType=VARCHAR} </if>
+			<if test="fileDesc != null and fileDesc != '' "> and  FILE_DESC =#{fileDesc,jdbcType=VARCHAR} </if>
+			<if test="filePath != null and filePath != '' "> and  FILE_PATH =#{filePath,jdbcType=VARCHAR} </if>
+			<if test="upDate != null and upDate != '' "> and  UP_DATE =#{upDate,jdbcType=VARCHAR} </if>
+			<if test="upTime != null and upTime != '' "> and  UP_TIME =#{upTime,jdbcType=VARCHAR} </if>
+	   </where>
+   </select>
+   
+   <sql id="queryAbnormalSql">
+          SELECT
+            a.QMNUM as qmnum,
+            a.PRUEFLOS as prueflos,
+            a.ART as art,
+            a.MATNR as matnr,
+            a.WERKS as werks,
+            a.LIFNR as lifnr,
+            a.MGEIN as mgein,
+            a.EBELN as ebeln,
+            a.EBELP as ebelp,
+            a.CHARG as charg,
+            a.MBLNR as mblnr,
+            a.BUZEI as buzei,
+            replace(LEFT(a.BUDAT,10),'0000-00-00','') as budat,
+            a.RKMNG as rkmng,
+            a.MENGE as menge,
+            a.LICHN as lichn,
+            a.MGEIG as mgeig,
+            a.GROES as groes,
+            a.QMART as qmart,
+            attr1.ATTRIBUTE_VALUE as qmartDesc,
+            a.QMTXT as qmtxt,
+            a.MAKTX as maktx,
+            a.WERKS_NAME as werksName,
+            a.LIFNR_NAME as lifnrName,
+            a.GYSFKZT as gysfkzt,
+            attr2.ATTRIBUTE_VALUE as gysfkztDesc,
+            replace(LEFT(a.ERDAT,10),'0000-00-00','') as erdat,
+            replace(LEFT(a.GYSDAT,10),'0000-00-00','') as gysdat,
+            replace(LEFT(a.GYSFKDAT,10),'0000-00-00','') as gysfkdat,
+            a.YCFX as ycfx,
+            a.YCCL as yccl,
+            a.GSFS as gsfs,
+            a.CLFS as clfs,
+            a.PCJE as pcje,
+            a.BZ as bz,
+            a.WAERS as waers,
+            replace(LEFT(a.BDWCDAT,10),'0000-00-00','') as bdwcdat,
+            a.PHYY as phyy,
+            a.GJAHR as gjahr,
+            replace(LEFT(a.AEDAT,10),'0000-00-00','') as aedat,
+            replace(LEFT(a.AEDAT1,10),'0000-00-00','') as aedat1,
+            a.AEZEIT as aezeit,
+            a.BYCD as bycd,
+            a.SENAM as senam,
+            a.ZSJWERKS as zsjwerks,
+            a.ZSJWERKS_DESC as zsjwerksDesc,
+            a.EBELN1 as ebeln1,
+            a.EBELP1 as ebelp1,
+            a.MBLNR1 as mblnr1,
+            a.MBLPO1 as mblpo1,
+            a.CLFS_DES as clfsDes
+        FROM srmdb.ZT003  a
+        left join srmdb.ATTRIBUTE_INFO attr1 on attr1.ATTRIBUTE_ID='exception_type' and  a.QMART=attr1.ATTRIBUTE_KEY
+        left join srmdb.ATTRIBUTE_INFO attr2 on attr2.ATTRIBUTE_ID='exception_state' and  a.GYSFKZT=attr2.ATTRIBUTE_KEY
+           <where>
+               <if test="parameter.qmnum != null and parameter.qmnum != '' "> 
+                              and  QMNUM =#{parameter.qmnum,jdbcType=VARCHAR}    
+                        </if>             
+               <if test=" parameter.factoryIds != null and  parameter.factoryIds != '' " > 
+                   and WERKS in  
+                   <foreach item="item" collection="parameter.factoryIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" parameter.stateIds != null and  parameter.stateIds != '' " > 
+                   and GYSFKZT in  
+                   <foreach item="item" collection="parameter.stateIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" parameter.typeIds != null and  parameter.typeIds != '' " > 
+                   and QMART in  
+                   <foreach item="item" collection="parameter.typeIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" parameter.orderCodeLineId != null and  parameter.orderCodeLineId != '' " > 
+                   and EBELP in  
+                   <foreach item="item" collection="parameter.orderCodeLineId.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" parameter.supplierIds != null and  parameter.supplierIds != '' " > 
+                   and LIFNR in  
+                   <foreach item="item" collection="parameter.supplierIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test=" parameter.actualFactoryIds != null and  parameter.actualFactoryIds != '' " > 
+                   and ZSJWERKS in  
+                   <foreach item="item" collection="parameter.actualFactoryIds.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>
+               </if> 
+               <if test="parameter.materialDes != null and parameter.materialDes != '' ">
+                   and MAKTX like "%"#{parameter.materialDes,jdbcType=VARCHAR}"%"
+               </if>
+               <!-- 
+               <if test="parameter.supplierName != null and parameter.supplierName != '' ">
+                    and LIFNR_NAME like "%"#{parameter.supplierName,jdbcType=VARCHAR}"%"
+               </if>   
+                -->                                                                                                             
+               <choose>
+                   <when test=" parameter.createDate_s != null and parameter.createDate_s != ''
+                                    and parameter.createDate_e != null and parameter.createDate_e != '' ">
+                        and left(ERDAT,10) BETWEEN replace(#{parameter.createDate_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.createDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.createDate_s != null and  parameter.createDate_s != '' " > 
+                           and left(ERDAT,10)  in  
+                           <foreach item="item" collection="parameter.createDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>  
+               <choose>
+                   <when test=" parameter.finishDate_s != null and parameter.finishDate_s != ''
+                                    and parameter.finishDate_e != null and parameter.finishDate_e != '' ">
+                        and left(BDWCDAT,10) BETWEEN replace(#{parameter.finishDate_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.finishDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.finishDate_s != null and  parameter.finishDate_s != '' " > 
+                           and left(BDWCDAT,10)  in  
+                           <foreach item="item" collection="parameter.finishDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>   
+               <choose>
+                   <when test=" parameter.noticeCode_s != null and parameter.noticeCode_s != ''
+                                    and parameter.noticeCode_e != null and parameter.noticeCode_e != '' ">
+                        and QMNUM BETWEEN replace(#{parameter.noticeCode_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.noticeCode_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.noticeCode_s != null and  parameter.noticeCode_s != '' " > 
+                           and QMNUM in  
+                           <foreach item="item" collection="parameter.noticeCode_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test=" parameter.orderCode_s != null and parameter.orderCode_s != ''
+                                    and parameter.orderCode_e != null and parameter.orderCode_e != '' ">
+                        and EBELN BETWEEN replace(#{parameter.orderCode_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.orderCode_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.orderCode_s != null and  parameter.orderCode_s != '' " > 
+                           and EBELN in  
+                           <foreach item="item" collection="parameter.orderCode_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>
+               <choose>
+                   <when test=" parameter.sendDate_s != null and parameter.sendDate_s != ''
+                                    and parameter.sendDate_e != null and parameter.sendDate_e != '' ">
+                        and left(GYSDAT,10) BETWEEN replace(#{parameter.sendDate_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.sendDate_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.sendDate_s != null and  parameter.sendDate_s != '' " > 
+                           and left(GYSDAT,10) in  
+                           <foreach item="item" collection="parameter.sendDate_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>                                                               
+        </where>
+        
+   </sql>
+   
+   <select id="queryAbnormalOrderCount" parameterType="com.want.srm.vo.Pagination" resultType="java.lang.Long" >
+    SELECT count(*) FROM ( 
+		     <include refid="queryAbnormalSql" />
+     ) temp 
+   </select>
+
+  <select id="queryAbnormalOrder" parameterType="com.want.srm.vo.Pagination" resultType="com.want.srm.vo.ZT003VO">
+	  SELECT * FROM( 
+	       <include refid="queryAbnormalSql" />
+	   ) temp 
+	   order by GYSFKZT,QMNUM
+	   limit #{beginRow,jdbcType=DECIMAL} , #{pageSize,jdbcType=DECIMAL}
+  </select>
+  
+    <select id="queryAbnormalOrderByRfc" parameterType="java.util.List" resultType="com.want.srm.vo.ZT003VO" >
+        SELECT
+            QMNUM as qmnum,
+            PRUEFLOS as prueflos,
+            ART as art,
+            MATNR as matnr,
+            WERKS as werks,
+            LIFNR as lifnr,
+            MGEIN as mgein,
+            EBELN as ebeln,
+            EBELP as ebelp,
+            CHARG as charg,
+            MBLNR as mblnr,
+            BUZEI as buzei,
+            BUDAT as budat,
+            RKMNG as rkmng,
+            MENGE as menge,
+            LICHN as lichn,
+            MGEIG as mgeig,
+            GROES as groes,
+            QMART as qmart,
+            QMTXT as qmtxt,
+            MAKTX as maktx,
+            WERKS_NAME as werksName,
+            LIFNR_NAME as lifnrName,
+            GYSFKZT as gysfkzt,
+            ERDAT as erdat,
+            GYSDAT as gysdat,
+            GYSFKDAT as gysfkdat,
+            YCFX as ycfx,
+            YCCL as yccl,
+            GSFS as gsfs,
+            CLFS as clfs,
+            PCJE as pcje,
+            BZ as bz,
+            WAERS as waers,
+            BDWCDAT as bdwcdat,
+            PHYY as phyy,
+            GJAHR as gjahr,
+            AEDAT as aedat,
+            AEDAT1 as aedat1,
+            AEZEIT as aezeit,
+            BYCD as bycd,
+            SENAM as senam,
+            ZSJWERKS as zsjwerks,
+            ZSJWERKS_DESC as zsjwerksDesc,
+            EBELN1 as ebeln1,
+            EBELP1 as ebelp1,
+            MBLNR1 as mblnr1,
+            MBLPO1 as mblpo1,
+            CLFS_DES as clfsDes
+        FROM srmdb.ZT003 a
+		inner join (
+		<foreach collection="list" item="item" index="index" separator=" union all " >  
+		        select #{item.mblnr,jdbcType=VARCHAR} as MBLNR_1, 
+				       #{item.buzel,jdbcType=VARCHAR} as BUZEI_1, 
+				       #{item.mjahr,jdbcType=VARCHAR} as GJAHR_1 from dual    
+		</foreach>  
+		) c on a.MBLNR=c.MBLNR_1 and a.BUZEI=c.BUZEI_1 and a.GJAHR=c.GJAHR_1
+		where a.QMART ='F2' and GYSFKZT !='S'
+  </select>
+  
+</mapper>

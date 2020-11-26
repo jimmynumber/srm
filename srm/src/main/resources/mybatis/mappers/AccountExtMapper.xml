@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.AccountDao">
+  <select id="findByAccount" parameterType="java.lang.String" resultType="com.want.srm.vo.AccountVo">
+    SELECT A.ACCOUNT AS userId
+    , A.NAME AS userName
+    , A.PASSWORD AS password
+    ,A.STATUS AS isFirst 
+    ,RI.VALUE AS roleId 
+    from srmdb.ACCOUNT A 
+    RIGHT JOIN srmdb.ROLE_USER RU 
+    ON A.ID = RU.USER_ID
+    RIGHT JOIN srmdb.ROLE_INFO RI
+    ON RU.ROLE_ID  = RI.ROLE_ID AND RI.ID = 'ZBBP_ROLE'
+    where A.account = #{empId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getAccountByToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT 
+    ID, NAME, STATUS, ACCOUNT, PASSWORD, EMAIL, A.CREATE_DATE, A.UPDATE_DATE
+    from ACCOUNT A INNER JOIN srmdb.LOGIN_TOKEN LT ON A.ACCOUNT = LT.ACCOUNT_ID
+    where LT.TOKEN = #{token,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updatePassword" parameterType="com.want.srm.entity.Account">
+    update ACCOUNT
+    <set>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      STATUS = 0
+    </set>
+    where ACCOUNT = #{account,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getOneByAccountId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ACCOUNT
+    where ACCOUNT = #{accountId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getRolesByAccountId" parameterType="java.lang.String" resultType="java.lang.String">
+	SELECT DISTINCT RI.VALUE AS roleId 
+	from srmdb.ROLE_INFO RI
+	where RI.ROLE_ID IN
+	(SELECT RU.ROLE_ID from srmdb.ROLE_USER RU where RU.USER_ID = #{accountId,jdbcType=VARCHAR})AND RI.ID = 'ZBBP_ROLE'
+	</select>
+  
+    <select id="getAccountByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from ACCOUNT
+	    <where>
+			<if test="account != null and account != '' "> and  ACCOUNT =#{account,jdbcType=VARCHAR} </if>
+			<if test="name != null and name != '' "> 
+			  and exists(
+				   select 1 from SUPPLIER b 
+				   where  LPAD(LEFT(SUBSTRING(ACCOUNT,2),8),10,0) =b.SUPPLIER_CODE
+				   and b.SUPPLIER_NAME=#{name,jdbcType=VARCHAR} 
+				)
+			</if>
+			<if test="email != null and email != '' "> and  EMAIL =#{email,jdbcType=VARCHAR} </if>	    
+	        <if test="lifnr != null and lifnr != '' "> and  LOCATE(LEFT(SUBSTRING(ACCOUNT,2),8), #{lifnr,jdbcType=VARCHAR}) > 0 </if>
+	    </where>
+    </select>
+    <select id="selectAccountAndRoleById" parameterType="java.lang.String" resultMap="BaseResultMap">
+	    SELECT 
+	    <include refid="Base_Column_List" /> 
+	    FROM ACCOUNT
+		<where>
+			<if test="account != null and account != '' "> and  ACCOUNT =#{account,jdbcType=VARCHAR} </if>
+		    AND EXISTS (
+		    	SELECT USER_ID FROM srmdb.ROLE_USER WHERE ROLE_USER.USER_ID =#{account,jdbcType=VARCHAR})
+	    </where>
+    </select>
+</mapper>

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT009Dao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.ZT009">
+    <id column="DZBDH" jdbcType="VARCHAR" property="dzbdh" />
+    <id column="DZBMS" jdbcType="VARCHAR" property="dzbms" />
+    <result column="EKORG" jdbcType="VARCHAR" property="ekorg" />
+    <result column="EBELN" jdbcType="VARCHAR" property="ebeln" />
+    <result column="EBELP" jdbcType="VARCHAR" property="ebelp" />
+    <result column="BUDAT" jdbcType="VARCHAR" property="budat" />
+    <result column="BTEXT" jdbcType="VARCHAR" property="btext" />
+    <result column="MATNR" jdbcType="VARCHAR" property="matnr" />
+    <result column="MAKTX" jdbcType="VARCHAR" property="maktx" />
+    <result column="BPMNG" jdbcType="DECIMAL" property="bpmng" />
+    <result column="MSEHL" jdbcType="VARCHAR" property="msehl" />
+    <result column="MSEHS" jdbcType="VARCHAR" property="msehs" />
+    <result column="MENGE" jdbcType="VARCHAR" property="menge" />
+    <result column="NETPR" jdbcType="DECIMAL" property="netpr" />
+    <result column="PEINH" jdbcType="DECIMAL" property="peinh" />
+    <result column="DMBTR1" jdbcType="DECIMAL" property="dmbtr1" />
+    <result column="DMBTR" jdbcType="DECIMAL" property="dmbtr" />
+    <result column="QMNUM" jdbcType="VARCHAR" property="qmnum" />
+    <result column="ERDAT" jdbcType="VARCHAR" property="erdat" />
+    <result column="MGEIG" jdbcType="DECIMAL" property="mgeig" />
+    <result column="PCJE" jdbcType="DECIMAL" property="pcje" />
+    <result column="GYSFKZT" jdbcType="VARCHAR" property="gysfkzt" />
+    <result column="BDWCDAT" jdbcType="VARCHAR" property="bdwcdat" />
+    <result column="WERKS" jdbcType="VARCHAR" property="werks" />
+    <result column="NAME1" jdbcType="VARCHAR" property="name1" />
+    <result column="LIFNR" jdbcType="VARCHAR" property="lifnr" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="WAERS" jdbcType="VARCHAR" property="waers" />
+    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="MBLNR" jdbcType="VARCHAR" property="mblnr" />
+    <result column="MJAHR" jdbcType="VARCHAR" property="mjahr" />
+    <result column="BUZEI" jdbcType="VARCHAR" property="buzei" />
+    <result column="TEXT1" jdbcType="VARCHAR" property="text1" />
+    <result column="VAEDATUM" jdbcType="VARCHAR" property="vaedatum" />
+    <result column="LSMNG" jdbcType="DECIMAL" property="lsmng" />
+    <result column="ZSJDHJE" jdbcType="DECIMAL" property="zsjdhje" />
+    <result column="ZCYL" jdbcType="DECIMAL" property="zcyl" />
+    <result column="MWSKZ" jdbcType="VARCHAR" property="mwskz" />
+    <result column="CPUDT" jdbcType="VARCHAR" property="cpudt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DZBDH, DZBMS, EKORG, EBELN, EBELP, BUDAT, BTEXT, MATNR, MAKTX, BPMNG, MSEHL, MSEHS, 
+    MENGE, NETPR, PEINH, DMBTR1, DMBTR, QMNUM, ERDAT, MGEIG, PCJE, GYSFKZT, BDWCDAT, 
+    WERKS, NAME1, LIFNR, NAME, WAERS, UNIT, MBLNR, MJAHR, BUZEI, TEXT1, VAEDATUM, LSMNG, 
+    ZSJDHJE, ZCYL, MWSKZ, CPUDT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.want.srm.entity.ZT009Key" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT009
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS = #{dzbms,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.want.srm.entity.ZT009Key">
+    delete from ZT009
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS = #{dzbms,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.ZT009">
+    insert into ZT009 (DZBDH, DZBMS, EKORG, 
+      EBELN, EBELP, BUDAT, 
+      BTEXT, MATNR, MAKTX, 
+      BPMNG, MSEHL, MSEHS, 
+      MENGE, NETPR, PEINH, 
+      DMBTR1, DMBTR, QMNUM, 
+      ERDAT, MGEIG, PCJE, 
+      GYSFKZT, BDWCDAT, WERKS, 
+      NAME1, LIFNR, NAME, 
+      WAERS, UNIT, MBLNR, 
+      MJAHR, BUZEI, TEXT1, 
+      VAEDATUM, LSMNG, ZSJDHJE, 
+      ZCYL, MWSKZ, CPUDT)
+    values (#{dzbdh,jdbcType=VARCHAR}, #{dzbms,jdbcType=VARCHAR}, #{ekorg,jdbcType=VARCHAR}, 
+      #{ebeln,jdbcType=VARCHAR}, #{ebelp,jdbcType=VARCHAR}, #{budat,jdbcType=VARCHAR}, 
+      #{btext,jdbcType=VARCHAR}, #{matnr,jdbcType=VARCHAR}, #{maktx,jdbcType=VARCHAR}, 
+      #{bpmng,jdbcType=DECIMAL}, #{msehl,jdbcType=VARCHAR}, #{msehs,jdbcType=VARCHAR}, 
+      #{menge,jdbcType=VARCHAR}, #{netpr,jdbcType=DECIMAL}, #{peinh,jdbcType=DECIMAL}, 
+      #{dmbtr1,jdbcType=DECIMAL}, #{dmbtr,jdbcType=DECIMAL}, #{qmnum,jdbcType=VARCHAR}, 
+      #{erdat,jdbcType=VARCHAR}, #{mgeig,jdbcType=DECIMAL}, #{pcje,jdbcType=DECIMAL}, 
+      #{gysfkzt,jdbcType=VARCHAR}, #{bdwcdat,jdbcType=VARCHAR}, #{werks,jdbcType=VARCHAR}, 
+      #{name1,jdbcType=VARCHAR}, #{lifnr,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{waers,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{mblnr,jdbcType=VARCHAR}, 
+      #{mjahr,jdbcType=VARCHAR}, #{buzei,jdbcType=VARCHAR}, #{text1,jdbcType=VARCHAR}, 
+      #{vaedatum,jdbcType=VARCHAR}, #{lsmng,jdbcType=DECIMAL}, #{zsjdhje,jdbcType=DECIMAL}, 
+      #{zcyl,jdbcType=DECIMAL}, #{mwskz,jdbcType=VARCHAR}, #{cpudt,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.ZT009">
+    insert into ZT009
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        DZBDH,
+      </if>
+      <if test="dzbms != null">
+        DZBMS,
+      </if>
+      <if test="ekorg != null">
+        EKORG,
+      </if>
+      <if test="ebeln != null">
+        EBELN,
+      </if>
+      <if test="ebelp != null">
+        EBELP,
+      </if>
+      <if test="budat != null">
+        BUDAT,
+      </if>
+      <if test="btext != null">
+        BTEXT,
+      </if>
+      <if test="matnr != null">
+        MATNR,
+      </if>
+      <if test="maktx != null">
+        MAKTX,
+      </if>
+      <if test="bpmng != null">
+        BPMNG,
+      </if>
+      <if test="msehl != null">
+        MSEHL,
+      </if>
+      <if test="msehs != null">
+        MSEHS,
+      </if>
+      <if test="menge != null">
+        MENGE,
+      </if>
+      <if test="netpr != null">
+        NETPR,
+      </if>
+      <if test="peinh != null">
+        PEINH,
+      </if>
+      <if test="dmbtr1 != null">
+        DMBTR1,
+      </if>
+      <if test="dmbtr != null">
+        DMBTR,
+      </if>
+      <if test="qmnum != null">
+        QMNUM,
+      </if>
+      <if test="erdat != null">
+        ERDAT,
+      </if>
+      <if test="mgeig != null">
+        MGEIG,
+      </if>
+      <if test="pcje != null">
+        PCJE,
+      </if>
+      <if test="gysfkzt != null">
+        GYSFKZT,
+      </if>
+      <if test="bdwcdat != null">
+        BDWCDAT,
+      </if>
+      <if test="werks != null">
+        WERKS,
+      </if>
+      <if test="name1 != null">
+        NAME1,
+      </if>
+      <if test="lifnr != null">
+        LIFNR,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="waers != null">
+        WAERS,
+      </if>
+      <if test="unit != null">
+        UNIT,
+      </if>
+      <if test="mblnr != null">
+        MBLNR,
+      </if>
+      <if test="mjahr != null">
+        MJAHR,
+      </if>
+      <if test="buzei != null">
+        BUZEI,
+      </if>
+      <if test="text1 != null">
+        TEXT1,
+      </if>
+      <if test="vaedatum != null">
+        VAEDATUM,
+      </if>
+      <if test="lsmng != null">
+        LSMNG,
+      </if>
+      <if test="zsjdhje != null">
+        ZSJDHJE,
+      </if>
+      <if test="zcyl != null">
+        ZCYL,
+      </if>
+      <if test="mwskz != null">
+        MWSKZ,
+      </if>
+      <if test="cpudt != null">
+        CPUDT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dzbdh != null">
+        #{dzbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="dzbms != null">
+        #{dzbms,jdbcType=VARCHAR},
+      </if>
+      <if test="ekorg != null">
+        #{ekorg,jdbcType=VARCHAR},
+      </if>
+      <if test="ebeln != null">
+        #{ebeln,jdbcType=VARCHAR},
+      </if>
+      <if test="ebelp != null">
+        #{ebelp,jdbcType=VARCHAR},
+      </if>
+      <if test="budat != null">
+        #{budat,jdbcType=VARCHAR},
+      </if>
+      <if test="btext != null">
+        #{btext,jdbcType=VARCHAR},
+      </if>
+      <if test="matnr != null">
+        #{matnr,jdbcType=VARCHAR},
+      </if>
+      <if test="maktx != null">
+        #{maktx,jdbcType=VARCHAR},
+      </if>
+      <if test="bpmng != null">
+        #{bpmng,jdbcType=DECIMAL},
+      </if>
+      <if test="msehl != null">
+        #{msehl,jdbcType=VARCHAR},
+      </if>
+      <if test="msehs != null">
+        #{msehs,jdbcType=VARCHAR},
+      </if>
+      <if test="menge != null">
+        #{menge,jdbcType=VARCHAR},
+      </if>
+      <if test="netpr != null">
+        #{netpr,jdbcType=DECIMAL},
+      </if>
+      <if test="peinh != null">
+        #{peinh,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr1 != null">
+        #{dmbtr1,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr != null">
+        #{dmbtr,jdbcType=DECIMAL},
+      </if>
+      <if test="qmnum != null">
+        #{qmnum,jdbcType=VARCHAR},
+      </if>
+      <if test="erdat != null">
+        #{erdat,jdbcType=VARCHAR},
+      </if>
+      <if test="mgeig != null">
+        #{mgeig,jdbcType=DECIMAL},
+      </if>
+      <if test="pcje != null">
+        #{pcje,jdbcType=DECIMAL},
+      </if>
+      <if test="gysfkzt != null">
+        #{gysfkzt,jdbcType=VARCHAR},
+      </if>
+      <if test="bdwcdat != null">
+        #{bdwcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="werks != null">
+        #{werks,jdbcType=VARCHAR},
+      </if>
+      <if test="name1 != null">
+        #{name1,jdbcType=VARCHAR},
+      </if>
+      <if test="lifnr != null">
+        #{lifnr,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="waers != null">
+        #{waers,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="mblnr != null">
+        #{mblnr,jdbcType=VARCHAR},
+      </if>
+      <if test="mjahr != null">
+        #{mjahr,jdbcType=VARCHAR},
+      </if>
+      <if test="buzei != null">
+        #{buzei,jdbcType=VARCHAR},
+      </if>
+      <if test="text1 != null">
+        #{text1,jdbcType=VARCHAR},
+      </if>
+      <if test="vaedatum != null">
+        #{vaedatum,jdbcType=VARCHAR},
+      </if>
+      <if test="lsmng != null">
+        #{lsmng,jdbcType=DECIMAL},
+      </if>
+      <if test="zsjdhje != null">
+        #{zsjdhje,jdbcType=DECIMAL},
+      </if>
+      <if test="zcyl != null">
+        #{zcyl,jdbcType=DECIMAL},
+      </if>
+      <if test="mwskz != null">
+        #{mwskz,jdbcType=VARCHAR},
+      </if>
+      <if test="cpudt != null">
+        #{cpudt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.ZT009">
+    update ZT009
+    <set>
+      <if test="ekorg != null">
+        EKORG = #{ekorg,jdbcType=VARCHAR},
+      </if>
+      <if test="ebeln != null">
+        EBELN = #{ebeln,jdbcType=VARCHAR},
+      </if>
+      <if test="ebelp != null">
+        EBELP = #{ebelp,jdbcType=VARCHAR},
+      </if>
+      <if test="budat != null">
+        BUDAT = #{budat,jdbcType=VARCHAR},
+      </if>
+      <if test="btext != null">
+        BTEXT = #{btext,jdbcType=VARCHAR},
+      </if>
+      <if test="matnr != null">
+        MATNR = #{matnr,jdbcType=VARCHAR},
+      </if>
+      <if test="maktx != null">
+        MAKTX = #{maktx,jdbcType=VARCHAR},
+      </if>
+      <if test="bpmng != null">
+        BPMNG = #{bpmng,jdbcType=DECIMAL},
+      </if>
+      <if test="msehl != null">
+        MSEHL = #{msehl,jdbcType=VARCHAR},
+      </if>
+      <if test="msehs != null">
+        MSEHS = #{msehs,jdbcType=VARCHAR},
+      </if>
+      <if test="menge != null">
+        MENGE = #{menge,jdbcType=VARCHAR},
+      </if>
+      <if test="netpr != null">
+        NETPR = #{netpr,jdbcType=DECIMAL},
+      </if>
+      <if test="peinh != null">
+        PEINH = #{peinh,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr1 != null">
+        DMBTR1 = #{dmbtr1,jdbcType=DECIMAL},
+      </if>
+      <if test="dmbtr != null">
+        DMBTR = #{dmbtr,jdbcType=DECIMAL},
+      </if>
+      <if test="qmnum != null">
+        QMNUM = #{qmnum,jdbcType=VARCHAR},
+      </if>
+      <if test="erdat != null">
+        ERDAT = #{erdat,jdbcType=VARCHAR},
+      </if>
+      <if test="mgeig != null">
+        MGEIG = #{mgeig,jdbcType=DECIMAL},
+      </if>
+      <if test="pcje != null">
+        PCJE = #{pcje,jdbcType=DECIMAL},
+      </if>
+      <if test="gysfkzt != null">
+        GYSFKZT = #{gysfkzt,jdbcType=VARCHAR},
+      </if>
+      <if test="bdwcdat != null">
+        BDWCDAT = #{bdwcdat,jdbcType=VARCHAR},
+      </if>
+      <if test="werks != null">
+        WERKS = #{werks,jdbcType=VARCHAR},
+      </if>
+      <if test="name1 != null">
+        NAME1 = #{name1,jdbcType=VARCHAR},
+      </if>
+      <if test="lifnr != null">
+        LIFNR = #{lifnr,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="waers != null">
+        WAERS = #{waers,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        UNIT = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="mblnr != null">
+        MBLNR = #{mblnr,jdbcType=VARCHAR},
+      </if>
+      <if test="mjahr != null">
+        MJAHR = #{mjahr,jdbcType=VARCHAR},
+      </if>
+      <if test="buzei != null">
+        BUZEI = #{buzei,jdbcType=VARCHAR},
+      </if>
+      <if test="text1 != null">
+        TEXT1 = #{text1,jdbcType=VARCHAR},
+      </if>
+      <if test="vaedatum != null">
+        VAEDATUM = #{vaedatum,jdbcType=VARCHAR},
+      </if>
+      <if test="lsmng != null">
+        LSMNG = #{lsmng,jdbcType=DECIMAL},
+      </if>
+      <if test="zsjdhje != null">
+        ZSJDHJE = #{zsjdhje,jdbcType=DECIMAL},
+      </if>
+      <if test="zcyl != null">
+        ZCYL = #{zcyl,jdbcType=DECIMAL},
+      </if>
+      <if test="mwskz != null">
+        MWSKZ = #{mwskz,jdbcType=VARCHAR},
+      </if>
+      <if test="cpudt != null">
+        CPUDT = #{cpudt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS = #{dzbms,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.ZT009">
+    update ZT009
+    set EKORG = #{ekorg,jdbcType=VARCHAR},
+      EBELN = #{ebeln,jdbcType=VARCHAR},
+      EBELP = #{ebelp,jdbcType=VARCHAR},
+      BUDAT = #{budat,jdbcType=VARCHAR},
+      BTEXT = #{btext,jdbcType=VARCHAR},
+      MATNR = #{matnr,jdbcType=VARCHAR},
+      MAKTX = #{maktx,jdbcType=VARCHAR},
+      BPMNG = #{bpmng,jdbcType=DECIMAL},
+      MSEHL = #{msehl,jdbcType=VARCHAR},
+      MSEHS = #{msehs,jdbcType=VARCHAR},
+      MENGE = #{menge,jdbcType=VARCHAR},
+      NETPR = #{netpr,jdbcType=DECIMAL},
+      PEINH = #{peinh,jdbcType=DECIMAL},
+      DMBTR1 = #{dmbtr1,jdbcType=DECIMAL},
+      DMBTR = #{dmbtr,jdbcType=DECIMAL},
+      QMNUM = #{qmnum,jdbcType=VARCHAR},
+      ERDAT = #{erdat,jdbcType=VARCHAR},
+      MGEIG = #{mgeig,jdbcType=DECIMAL},
+      PCJE = #{pcje,jdbcType=DECIMAL},
+      GYSFKZT = #{gysfkzt,jdbcType=VARCHAR},
+      BDWCDAT = #{bdwcdat,jdbcType=VARCHAR},
+      WERKS = #{werks,jdbcType=VARCHAR},
+      NAME1 = #{name1,jdbcType=VARCHAR},
+      LIFNR = #{lifnr,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      WAERS = #{waers,jdbcType=VARCHAR},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      MBLNR = #{mblnr,jdbcType=VARCHAR},
+      MJAHR = #{mjahr,jdbcType=VARCHAR},
+      BUZEI = #{buzei,jdbcType=VARCHAR},
+      TEXT1 = #{text1,jdbcType=VARCHAR},
+      VAEDATUM = #{vaedatum,jdbcType=VARCHAR},
+      LSMNG = #{lsmng,jdbcType=DECIMAL},
+      ZSJDHJE = #{zsjdhje,jdbcType=DECIMAL},
+      ZCYL = #{zcyl,jdbcType=DECIMAL},
+      MWSKZ = #{mwskz,jdbcType=VARCHAR},
+      CPUDT = #{cpudt,jdbcType=VARCHAR}
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+      and DZBMS = #{dzbms,jdbcType=VARCHAR}
+  </update>
+</mapper>

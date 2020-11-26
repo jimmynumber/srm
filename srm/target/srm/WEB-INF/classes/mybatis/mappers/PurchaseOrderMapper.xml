@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.PurchaseOrderMapper">
+   
+   <insert id ="insertPurchaseBatch" parameterType="java.util.List" >
+          replace into srmdb.EKPO
+	          (
+	          	EBELN, EBELP, BEDAT, EEIND, MATNR, LIFNR, 
+	          	TXZ01, MENGE, MEINS, NETPR, WKURS, PEINH, 
+	          	BPRME, VALUE, ZTERM, MWSKZ, KBETR, WERKS, 
+	          	NAME, WERKS1, NAME1, LOEKZ, DATVR, UHRVR, 
+	          	CONFIRM_STATUS
+	          )
+	          values
+          <foreach collection ="list" item="item" index= "index" separator =",">
+              (
+              	#{item.ebeln},#{item.ebelp},#{item.bedat},#{item.eeind},#{item.matnr},#{item.lifnr},
+              	#{item.txz01},#{item.menge},#{item.meins},#{item.netpr},#{item.wkurs},#{item.peinh},
+              	#{item.bprme},#{item.value},#{item.zterm},#{item.mwskz},#{item.kbetr},#{item.werks},
+              	#{item.name},#{item.werks1},#{item.name1},#{item.loekz},#{item.datvr},#{item.uhrvr},
+              	#{item.confirmStatus}
+              )
+          </foreach >   
+   </insert>
+   
+   
+  <update id="modifyPurchaseBatch" parameterType="com.want.srm.vo.EkpoVO">
+      <if test="ebeln != null and ebeln != '' "> 
+           UPDATE srmdb.EKPO
+                set CONFIRM_DATE=now(),
+                    UPDATE_DATE=now(),
+                    CONFIRM_STATUS='B'
+           where EBELN  =#{ebeln,jdbcType=VARCHAR}  
+			<if test=" ebelp != null and  ebelp != '' " > 
+			   and EBELP in  
+			   <foreach item="item" collection="ebelp.split(',|，')" open="(" separator="," close=")">
+			             replace(#{item},' ','')
+			   </foreach>
+			</if>                   
+      </if>  
+  </update>
+   
+   <sql id="select_column_list">
+		SELECT
+			a.EBELN as ebeln ,
+			a.EBELP as ebelp ,
+			a.BEDAT as bedat ,
+			a.EEIND as eeind ,
+			a.MATNR as matnr ,
+			a.LIFNR as lifnr ,
+			(select SUPPLIER_NAME from SUPPLIER b where a.LIFNR=b.SUPPLIER_CODE) as lifnrName,
+			a.TXZ01 as txz01 ,
+			a.MENGE as menge ,
+			a.MEINS as meins ,
+			a.NETPR as netpr ,
+			a.WKURS as wkurs ,
+			a.PEINH as peinh ,
+			a.BPRME as bprme ,
+			a.`VALUE` as value ,
+			a.ZTERM as zterm ,
+			a.MWSKZ as mwskz ,
+			a.KBETR as kbetr ,
+			a.WERKS as werks ,
+			a.NAME as name ,
+			a.WERKS1 as werks1 ,
+			a.NAME1 as name1 ,
+			a.LOEKZ as loekz ,
+			a.DATVR as datvr ,
+			a.UHRVR as uhrvr ,
+			a.CONFIRM_STATUS as confirmStatus,
+			(select ATTRIBUTE_VALUE from ATTRIBUTE_INFO b where a.CONFIRM_STATUS=b.ATTRIBUTE_KEY and b.ATTRIBUTE_ID='purchase_status') as confirmStatusDesc,
+			CONFIRM_USER as confirmUser,
+            date_format(CONFIRM_DATE, '%Y-%m-%d %H:%i:%s') as confirmDate,
+            CREATE_USER as createUser,
+            date_format(CREATE_DATE, '%Y-%m-%d %H:%i:%s') as createDate,
+            UPDATE_USER as updateUser,
+            date_format(UPDATE_DATE, '%Y-%m-%d %H:%i:%s') as updateDate
+		FROM  srmdb.EKPO a      
+   </sql>
+   <sql id="queryPurchaseSql">
+		      <include refid="select_column_list"></include>
+        <where>
+			   <choose>
+                   <when test=" parameter.ebeln_s != null and parameter.ebeln_s != ''
+                                    and parameter.ebeln_e != null and parameter.ebeln_e != '' ">
+                        and EBELN BETWEEN replace(#{parameter.ebeln_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.ebeln_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.ebeln_s != null and  parameter.ebeln_s != '' " > 
+                           and EBELN  in  
+                           <foreach item="item" collection="parameter.ebeln_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose> 
+			   <if test=" parameter.ebelp != null and  parameter.ebelp != '' " > 
+				   and EBELP in  
+				   <foreach item="item" collection="parameter.ebelp.split(',|，')" open="(" separator="," close=")">
+				             replace(#{item},' ','')
+				   </foreach>
+			   </if>                 
+               <if test="parameter.werks != null and parameter.werks != '' "> 
+                   and WERKS in  
+                   <foreach item="item" collection="parameter.werks.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>                          
+               </if> 
+               <if test="parameter.werks1 != null and parameter.werks1 != '' "> 
+                   and WERKS1 in    
+                   <foreach item="item" collection="parameter.werks1.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>                           
+               </if> 
+               <if test="parameter.lifnr != null and parameter.lifnr != '' "> 
+                   and LIFNR in    
+                   <foreach item="item" collection="parameter.lifnr.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>                            
+               </if> 
+               <if test="parameter.confirmStatus != null and parameter.confirmStatus != '' "> 
+                   and CONFIRM_STATUS in    
+                   <foreach item="item" collection="parameter.confirmStatus.split(',|，')" open="(" separator="," close=")">
+                             replace(#{item},' ','')
+                   </foreach>                            
+               </if> 
+			   <choose>
+                   <when test=" parameter.bedat_s != null and parameter.bedat_s != ''
+                                    and parameter.bedat_e != null and parameter.bedat_e != '' ">
+                        and left(BEDAT,10) BETWEEN replace(#{parameter.bedat_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.bedat_e,jdbcType=VARCHAR},' ','')
+                   </when>
+                   <otherwise>
+                      <if test=" parameter.bedat_s != null and  parameter.bedat_s != '' " > 
+                           and left(BEDAT,10)  in  
+                           <foreach item="item" collection="parameter.bedat_s.split(',|，')" open="(" separator="," close=")">
+                              replace(#{item},' ','')
+                          </foreach>
+                     </if>
+                   </otherwise>
+               </choose>                                                                                                                                       
+        </where>
+        
+   </sql>
+   
+   <select id="queryPurchaseOrderCount" parameterType="com.want.srm.vo.Pagination" resultType="java.lang.Long" >
+    SELECT count(*) FROM ( 
+		     <include refid="queryPurchaseSql" />
+     ) temp 
+   </select>
+
+  <select id="queryPurchaseOrder" parameterType="com.want.srm.vo.Pagination" resultType="com.want.srm.vo.EkpoVO">
+	  SELECT * FROM( 
+	       <include refid="queryPurchaseSql" />
+	   ) temp 
+	   order by BEDAT DESC,EBELN,EBELP
+       <if test="parameter.isPage != null and parameter.isPage.toString() neq '0'.toString() "> 
+           limit #{beginRow,jdbcType=DECIMAL} , #{pageSize,jdbcType=DECIMAL}   
+       </if>  
+	   
+  </select>
+  
+  <select id="queryExistsPurchaseOrder" parameterType="java.util.List" resultType="com.want.srm.vo.EkpoVO">
+	    <include refid="select_column_list"></include>
+        inner join (
+		<foreach collection="list" item="item" index="index" separator=" union all " >  
+		        select #{item.ebeln,jdbcType=VARCHAR} as EBELN, 
+				       #{item.ebelp,jdbcType=VARCHAR} as EBELP,
+				       cast(CONCAT(#{item.datvr,jdbcType=VARCHAR},' ',#{item.uhrvr,jdbcType=VARCHAR}) as datetime) as datvr_uhrvr
+				         from dual    
+		</foreach>  
+		) b on a.EBELN=b.EBELN and a.EBELP=b.EBELP
+		    and ( b.datvr_uhrvr &lt;= cast(CONCAT(a.DATVR,' ',a.UHRVR) as datetime)  )  
+    </select>  
+  
+</mapper>

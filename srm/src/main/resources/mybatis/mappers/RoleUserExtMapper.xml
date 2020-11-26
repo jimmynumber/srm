@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.RoleUserDao">
+  <select id="selectRoleInfoById" parameterType="com.want.srm.entity.RoleUserKey" resultType="com.want.srm.vo.RoleInfoVo">
+    SELECT 
+    RI.ROLE_NAME AS roleName
+    , RI.NAME AS name
+    , RI.VALUE AS value 
+    FROM srmdb.ROLE_USER RU 
+    LEFT JOIN srmdb.ROLE_INFO RI 
+    ON RU.ROLE_ID = RI.ROLE_ID 
+    WHERE RU.USER_ID = #{userId,jdbcType=VARCHAR}
+    <if test="roleId != null">
+    	AND RU.ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="selectRoleByUserId" parameterType="com.want.srm.entity.RoleUserKey" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM ROLE_USER 
+    WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+    <if test="roleId != null">
+    	AND RU.ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

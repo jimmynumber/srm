@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT008Dao">
+  	<select id="selectStatementByCondition" parameterType="com.want.srm.vo.StatementDto" resultType="com.want.srm.vo.StatementVo">
+	    select 
+		DZBDH AS dzbdh
+		,CONFS AS confs
+		,NAME AS name
+		,NAME1 AS name1
+		,BCDAT AS bcdat
+		,ECDAT AS ecdat
+		,BEDAT AS bedat
+		,ENDAT AS endat
+		,ERDAT AS erdat
+		,SEDAT AS sedat
+		,CFDAT AS cfdat
+	    from ZT008
+	    <where>
+	<!-- 工厂 -->
+	    <if test=" factoryIds != null and  factoryIds != '' " > 
+	        and WERKS in  
+	        <foreach item="item" collection="factoryIds.split(',|，')" open="(" separator="," close=")">
+	                  replace(#{item},' ','')
+	        </foreach>
+	    </if>
+	    <!-- 供应商 --> 
+	    <if test=" supplierCodes != null and  supplierCodes != '' " > 
+	        and LIFNR in  
+	        <foreach item="item" collection="supplierCodes.split(',|，')" open="(" separator="," close=")">
+	                  replace(#{item},' ','')
+	        </foreach>
+	    </if>
+	    <!-- 对账单状态 --> 
+	    <if test=" stateIds != null and  stateIds != '' " > 
+	        and CONFS in  
+	        <foreach item="item" collection="stateIds.split(',|，')" open="(" separator="," close=")">
+	                  replace(#{item},' ','')
+	        </foreach>
+	    </if> 
+	    <!-- 对账单创建日期 --> 
+	    <choose>
+	        <when test=" createDate_s != null and createDate_s != ''
+	                         and createDate_e != null and createDate_e != '' ">
+	             and ERDAT BETWEEN replace(#{createDate_s,jdbcType=VARCHAR},' ','') AND replace(#{createDate_e,jdbcType=VARCHAR},' ','')
+	        </when>
+	        <otherwise>
+	           <if test=" createDate_s != null and  createDate_s != '' " > 
+	                and ERDAT in  
+	                <foreach item="item" collection="createDate_s.split(',|，')" open="(" separator="," close=")">
+	                   replace(#{item},' ','')
+	               </foreach>
+	          </if>
+	        </otherwise>
+	    </choose> 
+	    <!-- 对帐单号 -->
+	    <choose>
+	        <when test=" reconCode_s != null and reconCode_s != ''
+	                         and reconCode_e != null and reconCode_e != '' ">
+	             and DZBDH BETWEEN replace(#{reconCode_s,jdbcType=VARCHAR},' ','') AND replace(#{reconCode_e,jdbcType=VARCHAR},' ','')
+	        </when>
+	        <otherwise>
+	           <if test=" reconCode_s != null and  reconCode_s != '' " > 
+	                and DZBDH in  
+	                <foreach item="item" collection="reconCode_s.split(',|，')" open="(" separator="," close=")">
+	                   replace(#{item},' ','')
+	               </foreach>
+	          </if>
+	        </otherwise>
+	    </choose>
+	    <!-- 实际工厂 -->
+	    <if test=" realFactoryIds != null and  realFactoryIds != '' " > 
+	        and ZSJWERKS in  
+	        <foreach item="item" collection="realFactoryIds.split(',|，')" open="(" separator="," close=")">
+	                  replace(#{item},' ','')
+	        </foreach>
+	    </if>
+	    <if test="pageNumber != null and pageSize!= null">
+            limit #{startRow},#{pageSize}
+        </if>
+                                                                            
+  	</where>
+  </select>
+  
+  <select id="selectStatementInfoByCode" parameterType="java.lang.String" resultType="com.want.srm.vo.StatementInfoVo">
+    select 
+    DZBDH AS dzbdh
+	,WAERS AS waers
+	,WERKS AS werks
+	,NAME1 AS name1
+	,TEXT1 AS text1
+	,LIFNR AS lifnr	
+	,NAME AS name
+	,TTLAM AS ttlam
+	,BEDAT AS bedat
+	,ENDAT AS endat
+	,TTLAM2 AS ttlam2
+	,YCSDAT AS ycsdat
+	,YCEDAT AS ycedat
+	,TTLMI AS ttlmi
+	,CYCSDAT AS cycsdat
+	,CYCEDAT AS	cycedat
+	,TTLEQ AS ttleq
+	,UDBDATE AS	udbdate
+	,UDEDATE AS	udedate
+	,CONFS AS confs
+	,ZZGBZ AS zzgbz
+	,ZSJWERKS AS zsjwerks
+	,TTLFI AS ttlfi
+	,BCDAT AS bcdat
+	,ECDAT AS ecdat
+	,ERNAM AS ernam
+    from ZT008
+    where DZBDH = #{code,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectZT008ByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    ZT008.DZBDH,ZT008.WERKS,ZT008.NAME1,ZT008.LIFNR,ZT008.NAME,ZT008.BEDAT,ZT008.ENDAT,
+    ZT008.CONFS,ZT008.ERNAM,ZT008.ERDAT,ZT008.SEDAT,ZT008.CFDAT,ZT008.DEDAT,ZT008.WAERS,
+    ZT008.TEXT1,ZT008.TTLAM,ZT008.TTLMI,ZT008.TTLEQ,ZT008.TTLFI,ZT008.YCSDAT,ZT008.YCEDAT,
+    ZT008.CYCSDAT,ZT008.CYCEDAT,ZT008.UDBDATE,ZT008.UDEDATE,
+    ATTRIBUTE_INFO.ATTRIBUTE_VALUE AS ZZGBZ,ZT008.ZSJWERKS,
+    ZT008.ZSJWERKS_DESC,ZT008.BCDAT,ZT008.ECDAT,ZT008.TTLAM2
+    from ZT008
+    left join ATTRIBUTE_INFO on ZT008.ZZGBZ = ATTRIBUTE_INFO.ATTRIBUTE_KEY and ATTRIBUTE_INFO.ATTRIBUTE_ID = 'payment_type'
+    where DZBDH = #{code,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectZT008" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    ZT008.DZBDH,ZT008.WERKS,ZT008.NAME1,ZT008.LIFNR,ZT008.NAME,ZT008.BEDAT,ZT008.ENDAT,
+    a1.ATTRIBUTE_VALUE AS CONFS,ZT008.ERNAM,ZT008.ERDAT,ZT008.SEDAT,ZT008.CFDAT,ZT008.DEDAT,ZT008.WAERS,
+    ZT008.TEXT1,ZT008.TTLAM,ZT008.TTLMI,ZT008.TTLEQ,ZT008.TTLFI,ZT008.YCSDAT,ZT008.YCEDAT,
+    ZT008.CYCSDAT,ZT008.CYCEDAT,ZT008.UDBDATE,ZT008.UDEDATE,
+    CONCAT(ZT008.ZZGBZ,a2.ATTRIBUTE_VALUE) AS ZZGBZ,ZT008.ZSJWERKS,
+    ZT008.ZSJWERKS_DESC,ZT008.BCDAT,ZT008.ECDAT,ZT008.TTLAM2
+    from ZT008
+    left join ATTRIBUTE_INFO a1 on ZT008.CONFS = a1.ATTRIBUTE_KEY and a1.ATTRIBUTE_ID = 'statements_state'
+    left join ATTRIBUTE_INFO a2 on ZT008.ZZGBZ = a2.ATTRIBUTE_KEY and a2.ATTRIBUTE_ID = 'payment_type'
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectNextId" resultType="java.lang.String">
+  	SELECT LPAD(CAST(DZBDH+1 AS CHAR), 10, 0) AS mid from srmdb.ZT008 ORDER BY DZBDH+0 DESC limit 0,1
+  </select>
+  
+  <select id="isExistsStatement" resultType="java.lang.Boolean" parameterType="java.util.Map">
+      select if(count(1)=0,0,1)
+      from srmdb.ZT008 a 
+      inner join srmdb.ZT009 b on a.DZBDH=b.DZBDH
+      where a.CONFS in ('A','B','C')
+      <if test="mblnr != null and mblnr != '' "> and  b.MBLNR =#{mblnr,jdbcType=VARCHAR} </if>
+      <if test="buzel != null and buzel != '' "> and  b.BUZEI =#{buzel,jdbcType=VARCHAR} </if>
+      <if test="mjahr != null and mjahr != '' "> and  b.MJAHR =#{mjahr,jdbcType=VARCHAR} </if>                
+  </select>
+    
+  <select id="isExistsRecord" resultType="java.lang.Boolean">
+  	select if(count(1)=0,0,1) from srmdb.ZT008
+  </select>
+  <sql id="queryStatementSql">
+  	select 
+		DZBDH AS dzbdh
+		,CONFS AS confs
+		,NAME AS name
+		,NAME1 AS name1
+		,BCDAT AS bcdat
+		,ECDAT AS ecdat
+		,BEDAT AS bedat
+		,ENDAT AS endat
+		,replace(LEFT(ERDAT,10),'0000-00-00','') as erdat
+		,SEDAT AS sedat
+		,CFDAT AS cfdat
+	    from ZT008
+	    <where>
+        <!-- 工厂 -->
+         	<if test=" parameter.factoryIds != null and  parameter.factoryIds != '' " > 
+               and WERKS in  
+               <foreach item="item" collection="parameter.factoryIds.split(',|，')" open="(" separator="," close=")">
+                         replace(#{item},' ','')
+               </foreach>
+           </if>
+           <!-- 供应商 --> 
+           <if test=" parameter.supplierCodes != null and  parameter.supplierCodes != '' " > 
+               and LIFNR in  
+               <foreach item="item" collection="parameter.supplierCodes.split(',|，')" open="(" separator="," close=")">
+                         replace(#{item},' ','')
+               </foreach>
+           </if>
+           <!-- 对账单状态 --> 
+           <if test=" parameter.stateIds != null and  parameter.stateIds != '' " > 
+               and CONFS in  
+               <foreach item="item" collection="parameter.stateIds.split(',|，')" open="(" separator="," close=")">
+                         replace(#{item},' ','')
+               </foreach>
+           </if> 
+           <!-- 对账单创建日期 --> 
+           <choose>
+               <when test=" parameter.createDate_s != null and parameter.createDate_s != ''
+                                and parameter.createDate_e != null and parameter.createDate_e != '' ">
+                    and left(ERDAT,10) BETWEEN replace(#{parameter.createDate_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.createDate_e,jdbcType=VARCHAR},' ','')
+               </when>
+               <otherwise>
+                  <if test=" parameter.createDate_s != null and  parameter.createDate_s != '' " > 
+                       and ERDAT in  
+                       <foreach item="item" collection="parameter.createDate_s.split(',|，')" open="(" separator="," close=")">
+                          replace(#{item},' ','')
+                      </foreach>
+                 </if>
+               </otherwise>
+           </choose> 
+           <!-- 对帐单号 -->
+           <choose>
+               <when test=" parameter.reconCode_s != null and parameter.reconCode_s != ''
+                                and parameter.reconCode_e != null and parameter.reconCode_e != '' ">
+                    and DZBDH BETWEEN replace(#{parameter.reconCode_s,jdbcType=VARCHAR},' ','') AND replace(#{parameter.reconCode_e,jdbcType=VARCHAR},' ','')
+               </when>
+               <otherwise>
+                  <if test=" parameter.reconCode_s != null and  parameter.reconCode_s != '' " > 
+                       and DZBDH in  
+                       <foreach item="item" collection="parameter.reconCode_s.split(',|，')" open="(" separator="," close=")">
+                          replace(#{item},' ','')
+                      </foreach>
+                 </if>
+               </otherwise>
+           </choose>
+           <!-- 实际工厂 -->
+           <if test=" parameter.realFactoryIds != null and  parameter.realFactoryIds != '' " > 
+               and ZSJWERKS in  
+               <foreach item="item" collection="parameter.realFactoryIds.split(',|，')" open="(" separator="," close=")">
+                         replace(#{item},' ','')
+               </foreach>
+           </if>
+          </where>
+  </sql>
+  
+  <select id="selcectStatementCount" parameterType="com.want.srm.vo.Pagination" resultType="java.lang.Long" >
+  	SELECT count(*) FROM ( 
+		     <include refid="queryStatementSql" />
+     ) temp 
+  </select>
+  
+  <select id="selcectStatementListByPage" parameterType="com.want.srm.vo.Pagination" resultType="com.want.srm.vo.StatementVo" >
+  	SELECT * FROM( 
+	       <include refid="queryStatementSql" />
+	   ) temp 
+	   order by ECDAT desc
+	   limit #{beginRow,jdbcType=DECIMAL} , #{pageSize,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selcectNewData" resultType="java.lang.String" >
+  	SELECT date_format(now(), '%Y-%m-%d %H:%i:%s')
+  </select>
+  
+    <select id="queryExistsStatement" parameterType="java.util.List" resultType="com.want.srm.vo.RfccatchaccinfResVO" >
+		select 
+		b.MBLNR as mblnr,
+		b.BUZEI as buzel,
+		b.MJAHR as mjahr
+		from srmdb.ZT008 a 
+		inner join srmdb.ZT009 b on a.DZBDH=b.DZBDH
+		inner join (
+		<foreach collection="list" item="item" index="index" separator=" union all " >  
+		        select #{item.mblnr,jdbcType=VARCHAR} as MBLNR, 
+		               #{item.buzel,jdbcType=VARCHAR} as BUZEI, 
+		               #{item.mjahr,jdbcType=VARCHAR} as MJAHR from dual 
+		</foreach>  
+		) c on b.MBLNR=c.MBLNR and b.BUZEI=c.BUZEI and b.MJAHR=c.MJAHR
+		where a.CONFS in ('A','B','C')
+  </select>
+  
+</mapper>

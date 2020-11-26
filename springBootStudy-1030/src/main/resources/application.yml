@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/,classpath:/resources/
+  thymeleaf:
+    cache: false
+    mode: HTML
+    spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test  

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT042Dao">
+  <resultMap id="BaseResultMap" type="com.want.srm.entity.ZT042">
+    <id column="ZGUID" jdbcType="VARCHAR" property="zguid" />
+    <result column="ZACCOUNT" jdbcType="VARCHAR" property="zaccount" />
+    <result column="ZTYPE" jdbcType="VARCHAR" property="ztype" />
+    <result column="ZTIME" jdbcType="VARCHAR" property="ztime" />
+    <result column="ZVOUCHERNO" jdbcType="VARCHAR" property="zvoucherno" />
+    <result column="ZRESULT" jdbcType="VARCHAR" property="zresult" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ZGUID, ZACCOUNT, ZTYPE, ZTIME, ZVOUCHERNO, ZRESULT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT042
+    where ZGUID = #{zguid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ZT042
+    where ZGUID = #{zguid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.want.srm.entity.ZT042">
+    insert into ZT042 (ZGUID, ZACCOUNT, ZTYPE, 
+      ZTIME, ZVOUCHERNO, ZRESULT
+      )
+    values (#{zguid,jdbcType=VARCHAR}, #{zaccount,jdbcType=VARCHAR}, #{ztype,jdbcType=VARCHAR}, 
+      #{ztime,jdbcType=VARCHAR}, #{zvoucherno,jdbcType=VARCHAR}, #{zresult,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.want.srm.entity.ZT042">
+    insert into ZT042
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="zguid != null">
+        ZGUID,
+      </if>
+      <if test="zaccount != null">
+        ZACCOUNT,
+      </if>
+      <if test="ztype != null">
+        ZTYPE,
+      </if>
+        ZTIME,
+      <if test="zvoucherno != null">
+        ZVOUCHERNO,
+      </if>
+      <if test="zresult != null">
+        ZRESULT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="zguid != null">
+        #{zguid,jdbcType=VARCHAR},
+      </if>
+      <if test="zaccount != null">
+        #{zaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="ztype != null">
+        #{ztype,jdbcType=VARCHAR},
+      </if>
+        date_format(now(), '%Y%m%d%H%i%s'),
+      <if test="zvoucherno != null">
+        #{zvoucherno,jdbcType=VARCHAR},
+      </if>
+      <if test="zresult != null">
+        #{zresult,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.want.srm.entity.ZT042">
+    update ZT042
+    <set>
+      <if test="zaccount != null">
+        ZACCOUNT = #{zaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="ztype != null">
+        ZTYPE = #{ztype,jdbcType=VARCHAR},
+      </if>
+      <if test="ztime != null">
+        ZTIME = #{ztime,jdbcType=VARCHAR},
+      </if>
+      <if test="zvoucherno != null">
+        ZVOUCHERNO = #{zvoucherno,jdbcType=VARCHAR},
+      </if>
+      <if test="zresult != null">
+        ZRESULT = #{zresult,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ZGUID = #{zguid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.want.srm.entity.ZT042">
+    update ZT042
+    set ZACCOUNT = #{zaccount,jdbcType=VARCHAR},
+      ZTYPE = #{ztype,jdbcType=VARCHAR},
+      ZTIME = #{ztime,jdbcType=VARCHAR},
+      ZVOUCHERNO = #{zvoucherno,jdbcType=VARCHAR},
+      ZRESULT = #{zresult,jdbcType=VARCHAR}
+    where ZGUID = #{zguid,jdbcType=VARCHAR}
+  </update>
+</mapper>

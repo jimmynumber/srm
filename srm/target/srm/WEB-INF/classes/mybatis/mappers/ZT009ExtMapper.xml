@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.want.srm.dao.ZT009Dao">
+  <select id="selectListByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ZT009
+    where DZBDH = #{statementCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectZT009ListBydzbdh" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+	DZBDH, DZBMS, EKORG, EBELN, EBELP, BUDAT, BTEXT, MATNR, MAKTX, BPMNG,
+	MSEHL, MSEHS, MENGE, NETPR, PEINH, DMBTR1, DMBTR, QMNUM, ERDAT, 
+	case when MGEIG is null then '0.000' else MGEIG end as MGEIG, 
+	case when PCJE is null then '0.00' else PCJE end as PCJE, 
+	a1.ATTRIBUTE_VALUE as GYSFKZT, BDWCDAT, WERKS, NAME1, LIFNR, 
+	NAME, WAERS, UNIT, MBLNR, MJAHR, BUZEI, TEXT1, VAEDATUM, LSMNG, 
+	ZSJDHJE, ZCYL, MWSKZ, CPUDT
+	from ZT009
+	left join ATTRIBUTE_INFO a1 on ZT009.GYSFKZT = a1.ATTRIBUTE_KEY and a1.ATTRIBUTE_ID = 'exception_state'
+    where DZBDH = #{dzbdh,jdbcType=VARCHAR} order by DZBMS+0
+  </select>
+  <insert id="insertList">
+    insert into ZT009 (DZBDH, DZBMS, EKORG, 
+      EBELN, EBELP, BUDAT, 
+      VAEDATUM, BTEXT, MATNR, 
+      MAKTX, BPMNG, MSEHL, 
+      MSEHS, MENGE, NETPR, 
+      PEINH, DMBTR1, DMBTR, 
+      QMNUM, ERDAT, MGEIG, 
+      PCJE, GYSFKZT, BDWCDAT, 
+      WERKS, NAME1, LIFNR, 
+      NAME, WAERS, UNIT, 
+      MBLNR, MJAHR, BUZEI, 
+      TEXT1, LSMNG, ZSJDHJE, 
+      ZCYL, MWSKZ, CPUDT)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.dzbdh,jdbcType=VARCHAR}, #{item.dzbms,jdbcType=VARCHAR}, #{item.ekorg,jdbcType=VARCHAR}, 
+      #{item.ebeln,jdbcType=VARCHAR}, #{item.ebelp,jdbcType=VARCHAR}, #{item.budat,jdbcType=VARCHAR}, 
+      #{item.vaedatum,jdbcType=VARCHAR}, #{item.btext,jdbcType=VARCHAR}, #{item.matnr,jdbcType=VARCHAR}, 
+      #{item.maktx,jdbcType=VARCHAR}, #{item.bpmng,jdbcType=VARCHAR}, #{item.msehl,jdbcType=VARCHAR}, 
+      #{item.msehs,jdbcType=VARCHAR}, #{item.menge,jdbcType=VARCHAR}, #{item.netpr,jdbcType=VARCHAR}, 
+      #{item.peinh,jdbcType=VARCHAR}, #{item.dmbtr1,jdbcType=VARCHAR}, #{item.dmbtr,jdbcType=VARCHAR}, 
+      #{item.qmnum,jdbcType=VARCHAR}, #{item.erdat,jdbcType=VARCHAR}, #{item.mgeig,jdbcType=VARCHAR}, 
+      #{item.pcje,jdbcType=VARCHAR}, #{item.gysfkzt,jdbcType=VARCHAR}, #{item.bdwcdat,jdbcType=VARCHAR}, 
+      #{item.werks,jdbcType=VARCHAR}, #{item.name1,jdbcType=VARCHAR}, #{item.lifnr,jdbcType=VARCHAR}, 
+      #{item.name,jdbcType=VARCHAR}, #{item.waers,jdbcType=VARCHAR}, #{item.unit,jdbcType=VARCHAR}, 
+      #{item.mblnr,jdbcType=VARCHAR}, #{item.mjahr,jdbcType=VARCHAR}, #{item.buzei,jdbcType=VARCHAR}, 
+      #{item.text1,jdbcType=VARCHAR}, #{item.lsmng,jdbcType=VARCHAR}, #{item.zsjdhje,jdbcType=VARCHAR}, 
+      #{item.zcyl,jdbcType=VARCHAR}, #{item.mwskz,jdbcType=VARCHAR}, #{item.cpudt,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+  <select id="selectNextId" resultType="java.lang.String">
+  	SELECT CAST(DZBMS+1 AS CHAR) AS mid from srmdb.ZT009 ORDER BY DZBMS+0 DESC limit 0,1
+  </select>
+</mapper>
